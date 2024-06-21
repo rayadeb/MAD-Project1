@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:recipe_and_meal_plan_app/pages/grocery.dart';
+import 'package:recipe_and_meal_plan_app/pages/meal_plan.dart';
+import 'package:recipe_and_meal_plan_app/pages/recipe.dart';
+import 'package:recipe_and_meal_plan_app/pages/favorite.dart';
 
 void main() {
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     theme: ThemeData(
       useMaterial3: true
     ),
@@ -19,18 +23,19 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
 
-  int _currentIndex = 0;
-  List<Widget> body = const [
-    Icon(Icons.home),
-    Icon(Icons.menu),
-    Icon(Icons.person)
+  int _currentIndex = 1; // default landing page "Meals Plan"
+  final List<Widget> pages = const [
+    GroceryPage(),
+    MealPlanPage(),
+    RecipePage(),
+    FavoritePage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: body[_currentIndex],
+        child: pages[_currentIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
