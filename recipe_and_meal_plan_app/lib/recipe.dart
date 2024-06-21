@@ -1,36 +1,72 @@
 class Recipe {
-  String? name;
-  String? url;
-  String? description;
   String? author;
+  int? cookTimeMinutes;
+  String? description;
+  bool? error;
+  List<String>? footnotes;
   List<String>? ingredients;
-  List<String>? method;
+  List<String>? instructions;
+  String? photoUrl;
+  int? prepTimeMinutes;
+  int? ratingStars;
+  int? reviewCount;
+  int? timeScraped;
+  String? title;
+  int? totalTimeMinutes;
+  String? url;
 
   Recipe(
-      {this.name,
-      this.url,
+      {this.author,
+      this.cookTimeMinutes,
       this.description,
-      this.author,
+      this.error,
+      this.footnotes,
       this.ingredients,
-      this.method});
+      this.instructions,
+      this.photoUrl,
+      this.prepTimeMinutes,
+      this.ratingStars,
+      this.reviewCount,
+      this.timeScraped,
+      this.title,
+      this.totalTimeMinutes,
+      this.url});
 
   Recipe.fromJson(Map<String, dynamic> json) {
-    name = json['Name'];
+    author = json['author'];
+    cookTimeMinutes = json['cook_time_minutes'];
+    description = json['description'];
+    error = json['error'];
+    footnotes = json['footnotes'].cast<String>();
+    ingredients = json['ingredients'].cast<String>();
+    instructions = json['instructions'].cast<String>();
+    photoUrl = json['photo_url'];
+    prepTimeMinutes = json['prep_time_minutes'];
+    ratingStars = json['rating_stars'];
+    reviewCount = json['review_count'];
+    timeScraped = json['time_scraped'];
+    title = json['title'];
+    totalTimeMinutes = json['total_time_minutes'];
     url = json['url'];
-    description = json['Description'];
-    author = json['Author'];
-    ingredients = json['Ingredients'].cast<String>();
-    method = json['Method'].cast<String>();
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['Name'] = this.name;
+    data['author'] = this.author;
+    data['cook_time_minutes'] = this.cookTimeMinutes;
+    data['description'] = this.description;
+    data['error'] = this.error;
+    data['footnotes'] = this.footnotes;
+    data['ingredients'] = this.ingredients;
+    data['instructions'] = this.instructions;
+    data['photo_url'] = this.photoUrl;
+    data['prep_time_minutes'] = this.prepTimeMinutes;
+    data['rating_stars'] = this.ratingStars;
+    data['review_count'] = this.reviewCount;
+    data['time_scraped'] = this.timeScraped;
+    data['title'] = this.title;
+    data['total_time_minutes'] = this.totalTimeMinutes;
     data['url'] = this.url;
-    data['Description'] = this.description;
-    data['Author'] = this.author;
-    data['Ingredients'] = this.ingredients;
-    data['Method'] = this.method;
     return data;
   }
 }

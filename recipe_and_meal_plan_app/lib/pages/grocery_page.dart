@@ -52,7 +52,7 @@ class _GroceryPageState extends State<GroceryPage> {
               style: TextButton.styleFrom(),
               child: const Text(
                 'Cancel',
-                style: TextStyle(color: const Color.fromARGB(204, 39, 39, 39)),
+                style: TextStyle(color: Color.fromARGB(204, 39, 39, 39)),
               ),
             ),
             TextButton(
