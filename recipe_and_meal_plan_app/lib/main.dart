@@ -3,7 +3,6 @@ import 'package:recipe_and_meal_plan_app/pages/grocery_page.dart';
 import 'package:recipe_and_meal_plan_app/pages/meal_plan_page.dart';
 import 'package:recipe_and_meal_plan_app/pages/recipe_page.dart';
 import 'package:recipe_and_meal_plan_app/pages/favorites_page.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 void main() {
 
