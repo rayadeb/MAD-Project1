@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:recipe_and_meal_plan_app/pages/grocery.dart';
-import 'package:recipe_and_meal_plan_app/pages/meal_plan.dart';
-import 'package:recipe_and_meal_plan_app/pages/recipe.dart';
-import 'package:recipe_and_meal_plan_app/pages/favorite.dart';
+import 'package:recipe_and_meal_plan_app/pages/grocery_page.dart';
+import 'package:recipe_and_meal_plan_app/pages/meal_plan_page.dart';
+import 'package:recipe_and_meal_plan_app/pages/recipe_page.dart';
+import 'package:recipe_and_meal_plan_app/pages/favorites_page.dart';
 
 void main() {
+
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     theme: ThemeData(

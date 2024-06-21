@@ -12,6 +12,10 @@ class MealPlanPage extends StatefulWidget {
 class _MealPlanPageState extends State<MealPlanPage> {
 
   final CalendarWeekController _controller = CalendarWeekController();
+  // Map<DateTime, Item> myDict = {
+  //   DateTime.now(): Item('Hello')
+  // };
+  // DateTime now = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +56,9 @@ class _MealPlanPageState extends State<MealPlanPage> {
               ),
               onDatePressed: (DateTime datetime) {
                 // Do something
-                setState(() {});
+                setState(() {
+                  
+                });
               },
               onDateLongPressed: (DateTime datetime) {
                 // Do something
@@ -95,9 +101,10 @@ class _MealPlanPageState extends State<MealPlanPage> {
               ],
             )),
         Expanded(
+          // child: Test(item: myDict[_controller.selectedDate]),
           child: Center(
             child: Text(
-              '${_controller.selectedDate.day}/${_controller.selectedDate.month}/${_controller.selectedDate.year}',
+              '${_controller.selectedDate.month}/${_controller.selectedDate.day}/${_controller.selectedDate.year}',
               style: const TextStyle(fontSize: 50),
             ),
           ),
@@ -106,3 +113,19 @@ class _MealPlanPageState extends State<MealPlanPage> {
     );
   }
 }
+
+class Item {
+  String name;
+
+  Item(this.name);
+}
+
+// class Test extends StatelessWidget {
+//   final Item item;
+//   const Test({super.key, required this.item});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Placeholder();
+//   }
+// }
