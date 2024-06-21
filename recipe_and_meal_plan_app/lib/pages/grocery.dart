@@ -12,6 +12,7 @@ class _GroceryPageState extends State<GroceryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('Grocery List'),
       ),
     );

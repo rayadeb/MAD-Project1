@@ -12,6 +12,7 @@ class _RecipePageState extends State<RecipePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('Recipes'),
       ),
     );
