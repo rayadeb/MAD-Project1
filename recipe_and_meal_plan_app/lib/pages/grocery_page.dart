@@ -37,7 +37,7 @@ class _GroceryPageState extends State<GroceryPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Add a grocery item'),
+          title: const Text('Add a grocery item'),
           content: TextField(
             controller: _itemController,
             decoration: const InputDecoration(
@@ -50,7 +50,7 @@ class _GroceryPageState extends State<GroceryPage> {
                 Navigator.of(context).pop();
               },
               style: TextButton.styleFrom(),
-              child: Text(
+              child: const Text(
                 'Cancel',
                 style: TextStyle(color: const Color.fromARGB(204, 39, 39, 39)),
               ),
@@ -62,9 +62,9 @@ class _GroceryPageState extends State<GroceryPage> {
                 Navigator.of(context).pop();
               },
               style: TextButton.styleFrom(),
-              child: Text(
+              child: const Text(
                 'Add',
-                style: TextStyle(color: const Color.fromARGB(255, 143, 199, 142)),
+                style: TextStyle(color: Color.fromARGB(255, 143, 199, 142)),
               ),
             ),
           ],
@@ -81,14 +81,14 @@ class _GroceryPageState extends State<GroceryPage> {
         title: Text(
           "Grocery List",
           style: GoogleFonts.inter(
-            textStyle: TextStyle(
+            textStyle: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
               color: Color(0xFF4D4D4D), // Adjusted text color
             ),
           ),
         ),
-        backgroundColor: Color(0xFFDDEFDD),
+        backgroundColor: const Color(0xFFDDEFDD),
         elevation: 5,
         shadowColor: Colors.grey.withOpacity(0.5),
       ),
@@ -116,7 +116,7 @@ class _GroceryPageState extends State<GroceryPage> {
                         decoration: _items[index].isCompleted
                             ? TextDecoration.lineThrough
                             : TextDecoration.none,
-                        color: Color(0xFF4D4D4D),
+                        color: const Color(0xFF4D4D4D),
                       ),
                     ),
                     trailing: IconButton(

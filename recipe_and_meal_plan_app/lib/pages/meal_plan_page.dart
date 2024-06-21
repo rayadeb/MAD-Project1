@@ -22,8 +22,8 @@ class _MealPlanPageState extends State<MealPlanPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Meal Plan", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30.0, color: Color.fromARGB(255, 86, 77, 74))),
-        backgroundColor: const Color.fromARGB(255, 143, 199, 142),
+        title: const Text("Meal Plan", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0, color: Color.fromARGB(255, 86, 77, 74))),
+        backgroundColor: const Color.fromARGB(255, 239, 244, 250),
       ),
       body: Column(
         children: [
@@ -47,7 +47,7 @@ class _MealPlanPageState extends State<MealPlanPage> {
               pressedDateBackgroundColor: const Color.fromARGB(255, 239, 149, 156),
               todayBackgroundColor: const Color.fromARGB(255, 86, 77, 74),
               // dateBackgroundColor: const Color.fromARGB(255, 143, 199, 142),
-              backgroundColor: const Color.fromARGB(255, 239, 244, 250),
+              backgroundColor: const Color.fromARGB(255, 143, 199, 142),
               minDate: DateTime.now().add(
                 const Duration(days: -365),
               ),
