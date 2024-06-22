@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:recipe_and_meal_plan_app/pages/recipe_detail_page.dart';
 import 'package:recipe_and_meal_plan_app/recipe.dart';
+import 'package:recipe_and_meal_plan_app/pages/recipe_detail_page.dart';
 
 const String RECIPE_DATA = 'assets/recipe_data.json';
 
@@ -76,38 +78,55 @@ class _RecipePageState extends State<RecipePage> {
   }
 
   Widget buildGridItem(Recipe recipe) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0)
-      ),
-      clipBehavior: Clip.hardEdge,
-      child: Stack(
-        children: [
-          Image.network(
-            recipe.photoUrl!,
-            fit: BoxFit.cover,
-            height: 200.0,
-          ),
-          Positioned(
-            bottom: 10.0,
-            left: 10.0,
-            child: Text(
-              recipe.title!,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 20.0,
-                
-              )
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => RecipeDetail(recipe: recipe))
+        );
+      },
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0)
+        ),
+        clipBehavior: Clip.hardEdge,
+        child: Stack(
+          children: [
+            Image.network(
+              recipe.photoUrl!,
+              fit: BoxFit.cover,
+              height: 200.0,
             ),
-          ),
-          Positioned(
-            top: 10.0,
-            right: 10.0,
-            child: Icon(Icons.star, color: Colors.yellow[600]),
-          )
-        ],
+            Positioned(
+              bottom: 10.0,
+              left: 10.0,
+              child: Text(
+                recipe.title!,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                  
+                )
+              ),
+            ),
+            Positioned(
+              top: 10.0,
+              right: 10.0,
+              child: Icon(Icons.star, color: Colors.yellow[600]),
+            )
+          ],
+        ),
       ),
     );
+  }
+}
+
+class TestPage extends StatelessWidget {
+  const TestPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }
