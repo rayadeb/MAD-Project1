@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:recipe_and_meal_plan_app/recipe.dart';
 
+const String RECIPE_DATA = 'assets/recipe_data.json';
+
 class RecipePage extends StatefulWidget {
   const RecipePage({super.key});
 
@@ -13,10 +15,10 @@ class RecipePage extends StatefulWidget {
 class _RecipePageState extends State<RecipePage> {
 
   Future<List<Recipe>> getRecipes() async {
-    String data = await DefaultAssetBundle.of(context).loadString("assets/recipes.json");
-    List mapData = jsonDecode(data);
+    String data = await DefaultAssetBundle.of(context).loadString(RECIPE_DATA);
+    List<dynamic> mapData = jsonDecode(data);
 
-    print(mapData);
+    // print(mapData);
     List<Recipe> recipes = mapData.map((recipe) => Recipe.fromJson(recipe)).toList();
 
     return recipes;
@@ -75,7 +77,37 @@ class _RecipePageState extends State<RecipePage> {
 
   Widget buildGridItem(Recipe recipe) {
     return Card(
-      child: Text(recipe.name!)
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0)
+      ),
+      clipBehavior: Clip.hardEdge,
+      child: Stack(
+        children: [
+          Image.network(
+            recipe.photoUrl!,
+            fit: BoxFit.cover,
+            height: 200.0,
+          ),
+          Positioned(
+            bottom: 10.0,
+            left: 10.0,
+            child: Text(
+              recipe.title!,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 20.0,
+                
+              )
+            ),
+          ),
+          Positioned(
+            top: 10.0,
+            right: 10.0,
+            child: Icon(Icons.star, color: Colors.yellow[600]),
+          )
+        ],
+      ),
     );
   }
 }

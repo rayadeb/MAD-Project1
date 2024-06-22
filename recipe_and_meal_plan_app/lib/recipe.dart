@@ -8,7 +8,7 @@ class Recipe {
   List<String>? instructions;
   String? photoUrl;
   int? prepTimeMinutes;
-  int? ratingStars;
+  double? ratingStars;
   int? reviewCount;
   int? timeScraped;
   String? title;
@@ -42,7 +42,7 @@ class Recipe {
     instructions = json['instructions'].cast<String>();
     photoUrl = json['photo_url'];
     prepTimeMinutes = json['prep_time_minutes'];
-    ratingStars = json['rating_stars'];
+    ratingStars = json['rating_stars'].toDouble();
     reviewCount = json['review_count'];
     timeScraped = json['time_scraped'];
     title = json['title'];
