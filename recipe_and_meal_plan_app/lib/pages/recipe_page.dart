@@ -3,9 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:recipe_and_meal_plan_app/pages/recipe_detail_page.dart';
 import 'package:recipe_and_meal_plan_app/recipe.dart';
-import 'package:recipe_and_meal_plan_app/pages/recipe_detail_page.dart';
 
-const String RECIPE_DATA = 'assets/recipe_data.json';
+const String RECIPE_DATA = 'assets/formatted_recipe_data.json';
 
 class RecipePage extends StatefulWidget {
   const RecipePage({super.key});

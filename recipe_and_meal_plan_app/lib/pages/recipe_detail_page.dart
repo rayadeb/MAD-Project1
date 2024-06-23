@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:recipe_and_meal_plan_app/recipe.dart';
 
 class RecipeDetail extends StatefulWidget {

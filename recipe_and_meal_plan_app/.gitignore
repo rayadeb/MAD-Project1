@@ -44,3 +44,4 @@ app.*.map.json
 
 # Recipe dataset
 /assets/recipe_data.json
+/assets/formatted_recipe_data.json

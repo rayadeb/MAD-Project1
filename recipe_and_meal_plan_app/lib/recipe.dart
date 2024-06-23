@@ -14,6 +14,10 @@ class Recipe {
   String? title;
   int? totalTimeMinutes;
   String? url;
+  String? calories;
+  String? fat;
+  String? carbs;
+  String? protein;
 
   Recipe(
       {this.author,
@@ -30,7 +34,11 @@ class Recipe {
       this.timeScraped,
       this.title,
       this.totalTimeMinutes,
-      this.url});
+      this.url,
+      this.calories,
+      this.fat,
+      this.carbs,
+      this.protein});
 
   Recipe.fromJson(Map<String, dynamic> json) {
     author = json['author'];
@@ -48,6 +56,10 @@ class Recipe {
     title = json['title'];
     totalTimeMinutes = json['total_time_minutes'];
     url = json['url'];
+    calories = json['calories'];
+    fat = json['fat'];
+    carbs = json['carbs'];
+    protein = json['protein'];
   }
 
   Map<String, dynamic> toJson() {
@@ -67,6 +79,10 @@ class Recipe {
     data['title'] = this.title;
     data['total_time_minutes'] = this.totalTimeMinutes;
     data['url'] = this.url;
+    data['calories'] = this.calories;
+    data['fat'] = this.fat;
+    data['carbs'] = this.carbs;
+    data['protein'] = this.protein;
     return data;
   }
 }
