@@ -37,7 +37,8 @@ class _RecipePageState extends State<RecipePage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Recipes'),
+        title: const Text("Recipes", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0, color: Color.fromARGB(255, 86, 77, 74))),
+        backgroundColor: const Color.fromARGB(255, 239, 244, 250),
       ),
       body: FutureBuilder<List<Recipe>>(
         future: getRecipes(),
