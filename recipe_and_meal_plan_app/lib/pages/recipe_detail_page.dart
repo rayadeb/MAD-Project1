@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:recipe_and_meal_plan_app/recipe.dart';
 
 class RecipeDetail extends StatefulWidget {
@@ -43,19 +44,19 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
               Tab(text: "Directions",),
             ]
           ),
-          buildTabBarAndContent(),
+          buildTabBar(),
         ],
       ),
     );
   }
 
-  Widget buildTabBarAndContent() {
+  Widget buildTabBar() {
     return Expanded(
       child: TabBarView(
         controller: _controller,
         children: [
           Container(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(20.0),
             child: buildOverviewTab(),
           ),
           const Text('data'),
@@ -66,33 +67,82 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
   }
 
   Widget buildOverviewTab() {
-    return const Column(
-      children: [
-        Row(
-          children: [
-            Icon(Icons.food_bank),
-            Text("Servings"),
-            Spacer(),
-            Text('4'),
-          ],
-        ),
-        Row(
-          children: [
-            Icon(Icons.food_bank),
-            Text("Calories"),
-            Spacer(),
-            Text('600'),
-          ],
-        ),
-        Row(
-          children: [
-            Icon(Icons.food_bank),
-            Text("Total Time"),
-            Spacer(),
-            Text('30m'),
-          ],
-        ),
-      ],
+    return Container(
+      padding: const EdgeInsets.all(10.0),
+      child: const Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Column(
+            children: [
+              Row(
+                children: [
+                  Icon(Icons.food_bank_rounded),
+                  Text("Servings"),
+                  Spacer(),
+                  Text('4'),
+                ],
+              ),
+              Divider(
+                thickness: 0.5,
+                color: Color.fromARGB(255, 86, 77, 74),
+              ),
+              Row(
+                children: [
+                  Icon(Icons.food_bank_rounded),
+                  Text("Servings"),
+                  Spacer(),
+                  Text('4'),
+                ],
+              ),
+              Divider(
+                thickness: 0.5,
+                color: Color.fromARGB(255, 86, 77, 74),
+              ),
+              Row(
+                children: [
+                  Icon(Icons.food_bank_rounded),
+                  Text("Servings"),
+                  Spacer(),
+                  Text('4'),
+                ],
+              ),
+              Divider(
+                thickness: 0.5,
+                color: Color.fromARGB(255, 86, 77, 74),
+              ),
+            ],
+          ),
+          Spacer(),
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    Text("Protein", style: TextStyle(fontSize: 20.0),),
+                    Text("28g", style: TextStyle(fontSize: 40.0, color: Color.fromARGB(255, 150, 171, 217)),),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    Text("Carbs", style: TextStyle(fontSize: 20.0),),
+                    Text("7g", style: TextStyle(fontSize: 40.0, color: Color.fromARGB(255, 150, 171, 217)),),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    Text("Fat", style: TextStyle(fontSize: 20.0),),
+                    Text("32g", style: TextStyle(fontSize: 40.0, color: Color.fromARGB(255, 150, 171, 217)),),
+                  ],
+                ),
+              )
+            ],
+          )
+        ],
+      )
     );
   }
 }
