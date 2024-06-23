@@ -35,6 +35,14 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
             fit: BoxFit.cover,
             height: 200.0,
           ),
+          TabBar(
+            controller: _controller,
+            tabs: const [
+              Tab(text: "Overview",),
+              Tab(text: "Ingredients",),
+              Tab(text: "Directions",),
+            ]
+          ),
           buildTabBarAndContent(),
         ],
       ),
@@ -42,16 +50,48 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
   }
 
   Widget buildTabBarAndContent() {
-    return Column(
+    return Expanded(
+      child: TabBarView(
+        controller: _controller,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10.0),
+            child: buildOverviewTab(),
+          ),
+          const Text('data'),
+          const Text('data'),
+        ],
+      )
+    );
+  }
+
+  Widget buildOverviewTab() {
+    return const Column(
       children: [
-        TabBar(
-          controller: _controller,
-          tabs: const [
-            Tab(text: "Overview",),
-            Tab(text: "Ingredients",),
-            Tab(text: "Directions",),
-          ]
-        )
+        Row(
+          children: [
+            Icon(Icons.food_bank),
+            Text("Servings"),
+            Spacer(),
+            Text('4'),
+          ],
+        ),
+        Row(
+          children: [
+            Icon(Icons.food_bank),
+            Text("Calories"),
+            Spacer(),
+            Text('600'),
+          ],
+        ),
+        Row(
+          children: [
+            Icon(Icons.food_bank),
+            Text("Total Time"),
+            Spacer(),
+            Text('30m'),
+          ],
+        ),
       ],
     );
   }
