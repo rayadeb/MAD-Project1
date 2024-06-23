@@ -58,7 +58,7 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
             padding: const EdgeInsets.all(20.0),
             child: buildOverviewTab(),
           ),
-          const Text('data'),
+          buildIngredientsTab(),
           const Text('data'),
         ],
       )
@@ -142,6 +142,96 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
           )
         ],
       )
+    );
+  }
+
+  Widget buildIngredientsTab() {
+    return  Container(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: widget.recipe.ingredients!.length,
+              itemBuilder: (context, index) => buildIngredientRow(widget.recipe.ingredients![index]),
+            )
+          ),
+          Container(
+            padding: const EdgeInsets.all(10.0),
+            child: ElevatedButton(
+              onPressed: () {},
+              child: const FittedBox(
+                child: Row(
+                  children: [
+                    Icon(Icons.shopping_basket_rounded),
+                    Text("Add all to grocery list"),
+                  ],
+                )
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+    // return Container(
+    //   padding: const EdgeInsets.all(10.0),
+    //   child: NestedScrollView(
+    //     headerSliverBuilder: (context, innerOverscroll) => [
+    //      const SliverAppBar(
+    //         backgroundColor: Colors.transparent,
+    //         elevation: 0.0,
+    //       )
+    //     ],
+    //     body: Container(
+    //       padding: const EdgeInsets.all(10.0),
+    //       child: Column(
+    //         children: [
+    //           Expanded(
+    //             child: ListView.builder(
+    //               itemCount: widget.recipe.ingredients!.length,
+    //               itemBuilder: (context, index) => buildIngredientRow(widget.recipe.ingredients![index]),
+    //             )
+    //           ),
+    //           Container(
+    //             padding: const EdgeInsets.all(10.0),
+    //             child: ElevatedButton(
+    //               onPressed: () {},
+    //               child: const FittedBox(
+    //                 child: Row(
+    //                   children: [
+    //                     Icon(Icons.shopping_basket_rounded),
+    //                     Text("Add all to grocery list"),
+    //                   ],
+    //                 )
+    //               ),
+    //             ),
+    //           )
+    //         ],
+    //       )
+    //     ),
+    //   )
+    // );
+  }
+
+  Widget buildIngredientRow(String colData) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            const Icon(Icons.add_box_rounded),
+            Flexible(
+              child: Text(
+                colData,
+                overflow: TextOverflow.clip,
+              ),
+            ),
+          ],
+        ),
+        const Divider(
+          thickness: 0.5,
+          color: Color.fromARGB(255, 86, 77, 74),
+        )
+      ],
     );
   }
 }
