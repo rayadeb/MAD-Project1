@@ -59,7 +59,7 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
             child: buildOverviewTab(),
           ),
           buildIngredientsTab(),
-          const Text('data'),
+          buildDirectionTab(),
         ],
       )
     );
@@ -146,7 +146,7 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
   }
 
   Widget buildIngredientsTab() {
-    return  Container(
+    return Container(
       padding: const EdgeInsets.all(10.0),
       child: Column(
         children: [
@@ -173,44 +173,6 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
         ],
       ),
     );
-    // return Container(
-    //   padding: const EdgeInsets.all(10.0),
-    //   child: NestedScrollView(
-    //     headerSliverBuilder: (context, innerOverscroll) => [
-    //      const SliverAppBar(
-    //         backgroundColor: Colors.transparent,
-    //         elevation: 0.0,
-    //       )
-    //     ],
-    //     body: Container(
-    //       padding: const EdgeInsets.all(10.0),
-    //       child: Column(
-    //         children: [
-    //           Expanded(
-    //             child: ListView.builder(
-    //               itemCount: widget.recipe.ingredients!.length,
-    //               itemBuilder: (context, index) => buildIngredientRow(widget.recipe.ingredients![index]),
-    //             )
-    //           ),
-    //           Container(
-    //             padding: const EdgeInsets.all(10.0),
-    //             child: ElevatedButton(
-    //               onPressed: () {},
-    //               child: const FittedBox(
-    //                 child: Row(
-    //                   children: [
-    //                     Icon(Icons.shopping_basket_rounded),
-    //                     Text("Add all to grocery list"),
-    //                   ],
-    //                 )
-    //               ),
-    //             ),
-    //           )
-    //         ],
-    //       )
-    //     ),
-    //   )
-    // );
   }
 
   Widget buildIngredientRow(String colData) {
@@ -231,6 +193,52 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
           thickness: 0.5,
           color: Color.fromARGB(255, 86, 77, 74),
         )
+      ],
+    );
+  }
+
+  Widget buildDirectionTab() {
+    return Container(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: widget.recipe.instructions!.length,
+              itemBuilder: (context, index) => buildDirectionRow(index, widget.recipe.instructions![index]),
+            )
+          )
+        ],
+      )
+    );
+  }
+
+  Widget buildDirectionRow(int index, String insData) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Text(
+              (index + 1).toString(),
+              style: const TextStyle(
+                color: Color.fromARGB(255, 150, 171, 217),
+                fontSize: 40.0,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            const SizedBox(width: 20.0,),
+            Flexible(
+              child : Text(
+                insData,
+                overflow: TextOverflow.clip,
+                style: const TextStyle(
+                  fontSize: 16.0,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 20.0),
       ],
     );
   }
