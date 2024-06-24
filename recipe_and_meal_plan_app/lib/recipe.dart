@@ -1,4 +1,5 @@
 class Recipe {
+  int? recipeId;
   String? author;
   int? cookTimeMinutes;
   String? description;
@@ -14,33 +15,35 @@ class Recipe {
   String? title;
   int? totalTimeMinutes;
   String? url;
-  String? calories;
+  int? calories;
   String? fat;
   String? carbs;
   String? protein;
 
   Recipe(
-      {this.author,
-      this.cookTimeMinutes,
-      this.description,
-      this.error,
-      this.footnotes,
-      this.ingredients,
-      this.instructions,
-      this.photoUrl,
-      this.prepTimeMinutes,
-      this.ratingStars,
-      this.reviewCount,
-      this.timeScraped,
-      this.title,
-      this.totalTimeMinutes,
-      this.url,
-      this.calories,
-      this.fat,
-      this.carbs,
-      this.protein});
+      { this.recipeId,
+        this.author,
+        this.cookTimeMinutes,
+        this.description,
+        this.error,
+        this.footnotes,
+        this.ingredients,
+        this.instructions,
+        this.photoUrl,
+        this.prepTimeMinutes,
+        this.ratingStars,
+        this.reviewCount,
+        this.timeScraped,
+        this.title,
+        this.totalTimeMinutes,
+        this.url,
+        this.calories,
+        this.fat,
+        this.carbs,
+        this.protein});
 
   Recipe.fromJson(Map<String, dynamic> json) {
+    recipeId = json['recipe_id'];
     author = json['author'];
     cookTimeMinutes = json['cook_time_minutes'];
     description = json['description'];
