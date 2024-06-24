@@ -38,6 +38,7 @@ dependencies:
   flutter_calendar_week: ^3.0.2
   intl: ^0.18.1
   google_fonts: ^6.2.1
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:

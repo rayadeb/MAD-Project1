@@ -1,22 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:recipe_and_meal_plan_app/pages/grocery_page.dart';
 import 'package:recipe_and_meal_plan_app/pages/meal_plan_page.dart';
 import 'package:recipe_and_meal_plan_app/pages/recipe_page.dart';
 import 'package:recipe_and_meal_plan_app/pages/favorites_page.dart';
 
-void main() {
+class DatesProvider extends ChangeNotifier {
+  final List<DateTime> _dates = List<DateTime>.generate(7, (index) => DateTime.now().add(Duration(days: index)));
 
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    theme: ThemeData(
-      useMaterial3: true
-    ),
-    home: const Dashboard(),
-  ));
+  List<DateTime> get dates => _dates;
+
+  void loadMoreDates(int count) {
+    final lastDate = _dates.last;
+    List<DateTime> newDates = List<DateTime>.generate(count, (index) => lastDate.add(Duration(days: index + 1)));
+    _dates.addAll(newDates);
+    notifyListeners();
+  }
+}
+
+void main() {
+  // final datesProvider = DatesProvider();
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => DatesProvider(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          useMaterial3: true
+        ),
+        home: const Dashboard(),
+      ),
+    )
+  );
+
+  // runApp(MaterialApp(
+  //   debugShowCheckedModeBanner: false,
+  //   theme: ThemeData(
+  //     useMaterial3: true
+  //   ),
+  //   home: Dashboard(datesProvider: datesProvider),
+  // ));
 }
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
+
+  // final DatesProvider datesProvider;
 
   @override
   State<Dashboard> createState() => _DashboardState();

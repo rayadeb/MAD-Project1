@@ -30,10 +30,19 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
       ),
       body: Column(
         children: [
-          Image.network(
-            widget.recipe.photoUrl!,
-            fit: BoxFit.cover,
-            height: 200.0,
+          Stack(
+            children: [
+              Image.network(
+                widget.recipe.photoUrl!,
+                fit: BoxFit.cover,
+                height: 200.0,
+              ),
+              const Positioned(
+                top: 20.0,
+                right: 20.0,
+                child: Icon(Icons.favorite, color: Colors.red,),
+              ),
+            ],
           ),
           TabBar(
             controller: _controller,
