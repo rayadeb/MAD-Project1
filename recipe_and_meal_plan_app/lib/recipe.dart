@@ -24,6 +24,7 @@ class Recipe {
   String? fat;
   String? carbs;
   String? protein;
+  bool favorited;
 
   Recipe(
       { this.id,
@@ -45,52 +46,53 @@ class Recipe {
         this.calories,
         this.fat,
         this.carbs,
-        this.protein});
+        this.protein,
+        this.favorited = false});
 
-  Recipe.fromJson(Map<String, dynamic> json) {
-    // recipeId = json['recipe_id'];
-    // author = json['author'];
-    cookTimeMinutes = json['cook_time_minutes'];
-    description = json['description'];
-    // error = json['error'];
-    // footnotes = json['footnotes'].cast<String>();
-    ingredients = json['ingredients'].cast<String>();
-    instructions = json['instructions'].cast<String>();
-    photoUrl = json['photo_url'];
-    prepTimeMinutes = json['prep_time_minutes'];
-    ratingStars = json['rating_stars'].toDouble();
-    // reviewCount = json['review_count'];
-    // timeScraped = json['time_scraped'];
-    title = json['title'];
-    totalTimeMinutes = json['total_time_minutes'];
-    // url = json['url'];
-    calories = json['calories'];
-    fat = json['fat'];
-    carbs = json['carbs'];
-    protein = json['protein'];
-  }
+  // Recipe.fromJson(Map<String, dynamic> json) {
+  //   // recipeId = json['recipe_id'];
+  //   // author = json['author'];
+  //   cookTimeMinutes = json['cook_time_minutes'];
+  //   description = json['description'];
+  //   // error = json['error'];
+  //   // footnotes = json['footnotes'].cast<String>();
+  //   ingredients = json['ingredients'].cast<String>();
+  //   instructions = json['instructions'].cast<String>();
+  //   photoUrl = json['photo_url'];
+  //   prepTimeMinutes = json['prep_time_minutes'];
+  //   ratingStars = json['rating_stars'].toDouble();
+  //   // reviewCount = json['review_count'];
+  //   // timeScraped = json['time_scraped'];
+  //   title = json['title'];
+  //   totalTimeMinutes = json['total_time_minutes'];
+  //   // url = json['url'];
+  //   calories = json['calories'];
+  //   fat = json['fat'];
+  //   carbs = json['carbs'];
+  //   protein = json['protein'];
+  // }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    // data['author'] = author;
-    data['cook_time_minutes'] = cookTimeMinutes;
-    data['description'] = description;
-    // data['error'] = error;
-    // data['footnotes'] = footnotes;
-    data['ingredients'] = ingredients;
-    data['instructions'] = instructions;
-    data['photo_url'] = photoUrl;
-    data['prep_time_minutes'] = prepTimeMinutes;
-    data['rating_stars'] = ratingStars;
-    // data['review_count'] = reviewCount;
-    // data['time_scraped'] = timeScraped;
-    data['title'] = title;
-    data['total_time_minutes'] = totalTimeMinutes;
-    // data['url'] = url;
-    data['calories'] = calories;
-    data['fat'] = fat;
-    data['carbs'] = carbs;
-    data['protein'] = protein;
-    return data;
-  }
+  // Map<String, dynamic> toJson() {
+  //   final Map<String, dynamic> data = Map<String, dynamic>();
+  //   // data['author'] = author;
+  //   data['cook_time_minutes'] = cookTimeMinutes;
+  //   data['description'] = description;
+  //   // data['error'] = error;
+  //   // data['footnotes'] = footnotes;
+  //   data['ingredients'] = ingredients;
+  //   data['instructions'] = instructions;
+  //   data['photo_url'] = photoUrl;
+  //   data['prep_time_minutes'] = prepTimeMinutes;
+  //   data['rating_stars'] = ratingStars;
+  //   // data['review_count'] = reviewCount;
+  //   // data['time_scraped'] = timeScraped;
+  //   data['title'] = title;
+  //   data['total_time_minutes'] = totalTimeMinutes;
+  //   // data['url'] = url;
+  //   data['calories'] = calories;
+  //   data['fat'] = fat;
+  //   data['carbs'] = carbs;
+  //   data['protein'] = protein;
+  //   return data;
+  // }
 }

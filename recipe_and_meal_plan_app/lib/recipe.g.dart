@@ -42,43 +42,48 @@ const RecipeSchema = CollectionSchema(
       name: r'fat',
       type: IsarType.string,
     ),
-    r'ingredients': PropertySchema(
+    r'favorited': PropertySchema(
       id: 5,
+      name: r'favorited',
+      type: IsarType.bool,
+    ),
+    r'ingredients': PropertySchema(
+      id: 6,
       name: r'ingredients',
       type: IsarType.stringList,
     ),
     r'instructions': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'instructions',
       type: IsarType.stringList,
     ),
     r'photoUrl': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'photoUrl',
       type: IsarType.string,
     ),
     r'prepTimeMinutes': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'prepTimeMinutes',
       type: IsarType.long,
     ),
     r'protein': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'protein',
       type: IsarType.string,
     ),
     r'ratingStars': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'ratingStars',
       type: IsarType.double,
     ),
     r'title': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'title',
       type: IsarType.string,
     ),
     r'totalTimeMinutes': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'totalTimeMinutes',
       type: IsarType.long,
     )
@@ -177,14 +182,15 @@ void _recipeSerialize(
   writer.writeLong(offsets[2], object.cookTimeMinutes);
   writer.writeString(offsets[3], object.description);
   writer.writeString(offsets[4], object.fat);
-  writer.writeStringList(offsets[5], object.ingredients);
-  writer.writeStringList(offsets[6], object.instructions);
-  writer.writeString(offsets[7], object.photoUrl);
-  writer.writeLong(offsets[8], object.prepTimeMinutes);
-  writer.writeString(offsets[9], object.protein);
-  writer.writeDouble(offsets[10], object.ratingStars);
-  writer.writeString(offsets[11], object.title);
-  writer.writeLong(offsets[12], object.totalTimeMinutes);
+  writer.writeBool(offsets[5], object.favorited);
+  writer.writeStringList(offsets[6], object.ingredients);
+  writer.writeStringList(offsets[7], object.instructions);
+  writer.writeString(offsets[8], object.photoUrl);
+  writer.writeLong(offsets[9], object.prepTimeMinutes);
+  writer.writeString(offsets[10], object.protein);
+  writer.writeDouble(offsets[11], object.ratingStars);
+  writer.writeString(offsets[12], object.title);
+  writer.writeLong(offsets[13], object.totalTimeMinutes);
 }
 
 Recipe _recipeDeserialize(
@@ -199,15 +205,16 @@ Recipe _recipeDeserialize(
     cookTimeMinutes: reader.readLongOrNull(offsets[2]),
     description: reader.readStringOrNull(offsets[3]),
     fat: reader.readStringOrNull(offsets[4]),
+    favorited: reader.readBoolOrNull(offsets[5]) ?? false,
     id: id,
-    ingredients: reader.readStringList(offsets[5]),
-    instructions: reader.readStringList(offsets[6]),
-    photoUrl: reader.readStringOrNull(offsets[7]),
-    prepTimeMinutes: reader.readLongOrNull(offsets[8]),
-    protein: reader.readStringOrNull(offsets[9]),
-    ratingStars: reader.readDoubleOrNull(offsets[10]),
-    title: reader.readStringOrNull(offsets[11]),
-    totalTimeMinutes: reader.readLongOrNull(offsets[12]),
+    ingredients: reader.readStringList(offsets[6]),
+    instructions: reader.readStringList(offsets[7]),
+    photoUrl: reader.readStringOrNull(offsets[8]),
+    prepTimeMinutes: reader.readLongOrNull(offsets[9]),
+    protein: reader.readStringOrNull(offsets[10]),
+    ratingStars: reader.readDoubleOrNull(offsets[11]),
+    title: reader.readStringOrNull(offsets[12]),
+    totalTimeMinutes: reader.readLongOrNull(offsets[13]),
   );
   return object;
 }
@@ -230,20 +237,22 @@ P _recipeDeserializeProp<P>(
     case 4:
       return (reader.readStringOrNull(offset)) as P;
     case 5:
-      return (reader.readStringList(offset)) as P;
+      return (reader.readBoolOrNull(offset) ?? false) as P;
     case 6:
       return (reader.readStringList(offset)) as P;
     case 7:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readStringList(offset)) as P;
     case 8:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 9:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 10:
-      return (reader.readDoubleOrNull(offset)) as P;
-    case 11:
       return (reader.readStringOrNull(offset)) as P;
+    case 11:
+      return (reader.readDoubleOrNull(offset)) as P;
     case 12:
+      return (reader.readStringOrNull(offset)) as P;
+    case 13:
       return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -910,6 +919,16 @@ extension RecipeQueryFilter on QueryBuilder<Recipe, Recipe, QFilterCondition> {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'fat',
         value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Recipe, Recipe, QAfterFilterCondition> favoritedEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'favorited',
+        value: value,
       ));
     });
   }
@@ -2180,6 +2199,18 @@ extension RecipeQuerySortBy on QueryBuilder<Recipe, Recipe, QSortBy> {
     });
   }
 
+  QueryBuilder<Recipe, Recipe, QAfterSortBy> sortByFavorited() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'favorited', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Recipe, Recipe, QAfterSortBy> sortByFavoritedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'favorited', Sort.desc);
+    });
+  }
+
   QueryBuilder<Recipe, Recipe, QAfterSortBy> sortByPhotoUrl() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'photoUrl', Sort.asc);
@@ -2314,6 +2345,18 @@ extension RecipeQuerySortThenBy on QueryBuilder<Recipe, Recipe, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Recipe, Recipe, QAfterSortBy> thenByFavorited() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'favorited', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Recipe, Recipe, QAfterSortBy> thenByFavoritedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'favorited', Sort.desc);
+    });
+  }
+
   QueryBuilder<Recipe, Recipe, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -2433,6 +2476,12 @@ extension RecipeQueryWhereDistinct on QueryBuilder<Recipe, Recipe, QDistinct> {
     });
   }
 
+  QueryBuilder<Recipe, Recipe, QDistinct> distinctByFavorited() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'favorited');
+    });
+  }
+
   QueryBuilder<Recipe, Recipe, QDistinct> distinctByIngredients() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'ingredients');
@@ -2519,6 +2568,12 @@ extension RecipeQueryProperty on QueryBuilder<Recipe, Recipe, QQueryProperty> {
   QueryBuilder<Recipe, String?, QQueryOperations> fatProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'fat');
+    });
+  }
+
+  QueryBuilder<Recipe, bool, QQueryOperations> favoritedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'favorited');
     });
   }
 

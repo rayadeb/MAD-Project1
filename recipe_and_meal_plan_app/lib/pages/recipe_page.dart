@@ -24,23 +24,23 @@ class _RecipePageState extends State<RecipePage> {
   bool _didChangeMealPlan = false;
   String _searchQuery = "";
 
-  Future<void> addRecipesFromJson(Isar isar) async {
-    // Parse
-    String data = await DefaultAssetBundle.of(context).loadString(RECIPE_DATA);
-    final List<dynamic> jsonData = jsonDecode(data);
+  // Future<void> addRecipesFromJson(Isar isar) async {
+  //   // Parse
+  //   String data = await DefaultAssetBundle.of(context).loadString(RECIPE_DATA);
+  //   final List<dynamic> jsonData = jsonDecode(data);
 
-    // Convert JSON data to Recipe objects
-    final List<Recipe> recipes = jsonData.map((json) => Recipe.fromJson(json)).toList();
+  //   // Convert JSON data to Recipe objects
+  //   final List<Recipe> recipes = jsonData.map((json) => Recipe.fromJson(json)).toList();
 
-    // Add recipes to Isar database
-    await isar.writeTxn(() async {
-      await isar.recipes.putAll(recipes);
-    });
-  }
+  //   // Add recipes to Isar database
+  //   await isar.writeTxn(() async {
+  //     await isar.recipes.putAll(recipes);
+  //   });
+  // }
 
-  Future<List<Recipe>> getAllRecipes() async {
-    return await widget.isar.recipes.where().findAll();
-  }
+  // Future<List<Recipe>> getAllRecipes() async {
+  //   return await widget.isar.recipes.where().findAll();
+  // }
 
   Future<List<Recipe>> getRecipes(String query) async {
     // await Future.delayed(const Duration(seconds: 1));
@@ -90,12 +90,11 @@ class _RecipePageState extends State<RecipePage> {
               prefixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30.0),
-              )
+              ),
             ),
             onChanged: (value) {
               setState(() {
                 _searchQuery = value;
-                print(_searchQuery);
               });
             },
           ), // Search funcitonality
@@ -172,12 +171,29 @@ class _RecipePageState extends State<RecipePage> {
             Positioned(
               top: 10.0,
               right: 10.0,
-              child: Icon(Icons.bookmark_border_rounded, color: Colors.yellow[600], size: 36.0,),
+              child: GestureDetector(
+                onTap: () => addToFavorites(recipe),
+                child: recipe.favorited ?
+                  Icon(Icons.bookmark, color: Colors.yellow[600], size: 36.0) :
+                  Icon(Icons.bookmark_border_rounded, color: Colors.yellow[600], size: 36.0,),
+              )
+              // child: Icon(Icons.bookmark_border_rounded, color: Colors.yellow[600], size: 36.0,),
             )
           ],
         ),
       ),
     );
+  }
+
+  Future<void> addToFavorites(Recipe recipe) async {
+
+    await widget.isar.writeTxn(() async {
+      recipe.favorited = !recipe.favorited;
+      await widget.isar.recipes.put(recipe);
+      setState(() {
+        
+      });
+    });
   }
 
   Future<void> addToMealPlan(Recipe recipe) async {
