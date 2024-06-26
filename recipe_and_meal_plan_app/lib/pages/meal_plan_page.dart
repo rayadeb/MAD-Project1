@@ -216,7 +216,7 @@ class _MealPlanPageState extends State<MealPlanPage> {
                 color: const Color.fromARGB(255, 239, 244, 250),
               ),
               child: ListTile(
-                title: Text("BREAKFAST", style: TextStyle(color: Colors.grey[400], fontWeight: FontWeight.bold)),
+                title: Text("BREAKFAST", style: TextStyle(color: Colors.grey[500], fontWeight: FontWeight.bold)),
                 subtitle: Text(
                   breakfast?.title ?? "No meals planned yet",
                   style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
@@ -245,7 +245,7 @@ class _MealPlanPageState extends State<MealPlanPage> {
                 color: const Color.fromARGB(255, 239, 244, 250),
               ),
               child: ListTile(
-                title: Text("LUNCH", style: TextStyle(color: Colors.grey[400], fontWeight: FontWeight.bold)),
+                title: Text("LUNCH", style: TextStyle(color: Colors.grey[500], fontWeight: FontWeight.bold)),
                 subtitle: Text(
                   lunch?.title ?? "No meals planned yet",
                   style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
@@ -274,7 +274,7 @@ class _MealPlanPageState extends State<MealPlanPage> {
                 color: const Color.fromARGB(255, 239, 244, 250),
               ),
               child: ListTile(
-                title: Text("DINNER", style: TextStyle(color: Colors.grey[400], fontWeight: FontWeight.bold)),
+                title: Text("DINNER", style: TextStyle(color: Colors.grey[500], fontWeight: FontWeight.bold)),
                 subtitle: Text(
                   dinner?.title ?? "No meals planned yet",
                   style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),

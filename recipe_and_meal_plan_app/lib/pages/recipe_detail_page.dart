@@ -24,31 +24,41 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        // title: Text(widget.recipe.title!),
-        title: Text(widget.recipe.title!, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0, color: Color.fromARGB(255, 86, 77, 74))),
-        backgroundColor: const Color.fromARGB(255, 239, 244, 250),
+        title: Text(widget.recipe.title!, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0, color: Color(0xFF4D4D4D))),
+        backgroundColor: const Color(0xFFDDEFDD),
+        elevation: 5,
+        shadowColor: Colors.grey.withOpacity(0.5),
       ),
-      body: Column(
-        children: [
-          Stack(
-            children: [
-              Image.network(
-                widget.recipe.photoUrl!,
-                fit: BoxFit.cover,
-                height: 200.0,
-              ),
-            ],
-          ),
-          TabBar(
-            controller: _controller,
-            tabs: const [
-              Tab(text: "Overview",),
-              Tab(text: "Ingredients",),
-              Tab(text: "Directions",),
-            ]
-          ),
-          buildTabBar(),
-        ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                Image.network(
+                  widget.recipe.photoUrl!,
+                  fit: BoxFit.cover,
+                  height: 200.0,
+                ),
+              ],
+            ),
+            TabBar(
+              controller: _controller,
+              dividerColor: const Color.fromARGB(255, 239, 149, 156),
+              indicatorColor: const Color.fromARGB(255, 239, 149, 156),
+              labelColor: const Color.fromARGB(255, 239, 149, 156),
+              unselectedLabelColor: const Color.fromARGB(255, 86, 77, 74),
+              labelStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              tabs: const [
+                Tab(
+                  text: "Overview",
+                ),
+                Tab(text: "Ingredients",),
+                Tab(text: "Directions",),
+              ]
+            ),
+            buildTabBar(),
+          ],
+        ),
       ),
     );
   }
@@ -59,15 +69,15 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
         controller: _controller,
         children: [
           Container(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(10.0),
             child: buildOverviewTab(),
           ),
           Container(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(10.0),
             child: buildIngredientsTab(),
           ),
           Container(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(10.0),
             child: buildDirectionTab(),
           ),
           // buildIngredientsTab(),
@@ -78,82 +88,169 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
   }
 
   Widget buildOverviewTab() {
-    return Container(
-      padding: const EdgeInsets.all(10.0),
-      child: const Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Column(
+    return Column(
+      // mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0),
+              color: const Color.fromARGB(255, 239, 244, 250),
+            ),
+            child: ListTile(
+              leading: SizedBox(
+                height: 30.0,
+                child: Image.asset(
+                  "icons/serving.png",
+                  color: const Color.fromARGB(255, 143, 199, 142),
+                  colorBlendMode: BlendMode.srcIn,
+                ),
+              ),
+              title: const Text(
+                "Servings",
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 86, 77, 74),
+                ),
+              ),
+              trailing: const Text(
+                "4",
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 86, 77, 74),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0),
+              color: const Color.fromARGB(255, 239, 244, 250),
+            ),
+            child: ListTile(
+              leading: SizedBox(
+                height: 30.0,
+                child: Image.asset(
+                  "icons/calories.png",
+                  color: const Color.fromARGB(255, 143, 199, 142),
+                  colorBlendMode: BlendMode.srcIn,
+                ),
+              ),
+              title: const Text(
+                "Calories per serving",
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 86, 77, 74),
+                ),
+              ),
+              trailing: Text(
+                "${widget.recipe.calories}",
+                style: const TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 86, 77, 74),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0),
+              color: const Color.fromARGB(255, 239, 244, 250),
+            ),
+            child: ListTile(
+              leading: SizedBox(
+                height: 30.0,
+                child: Image.asset(
+                  "icons/time.png",
+                  color: const Color.fromARGB(255, 143, 199, 142),
+                  colorBlendMode: BlendMode.srcIn,
+                ),
+              ),
+              title: const Text(
+                "Total time",
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 86, 77, 74),
+                ),
+              ),
+              trailing: Text(
+                "${widget.recipe.totalTimeMinutes}m",
+                style: const TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 86, 77, 74),
+                ),
+              ),
+            ),
+          ),
+        ),
+        
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Row(
+              Column(
                 children: [
-                  Icon(Icons.food_bank_rounded),
-                  Text("Servings"),
-                  Spacer(),
-                  Text('4'),
+                  const Text(
+                    "Protein",
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: Color.fromARGB(255, 86, 77, 74),
+                      fontWeight: FontWeight.bold,
+                    )
+                  ),
+                  Text(widget.recipe.protein!, style: const TextStyle(fontSize: 40.0, color: Color.fromARGB(255, 239, 149, 156))),
                 ],
               ),
-              Divider(
-                thickness: 0.5,
-                color: Color.fromARGB(255, 86, 77, 74),
-              ),
-              Row(
+              Column(
                 children: [
-                  Icon(Icons.food_bank_rounded),
-                  Text("Servings"),
-                  Spacer(),
-                  Text('4'),
+                  const Text(
+                    "Carbs",
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: Color.fromARGB(255, 86, 77, 74),
+                      fontWeight: FontWeight.bold,
+                    )
+                  ),
+                  Text(
+                    widget.recipe.carbs!,
+                    style: const TextStyle(
+                      fontSize: 40.0,
+                      color: Color.fromARGB(255, 239, 149, 156),
+                    )
+                  ),
                 ],
               ),
-              Divider(
-                thickness: 0.5,
-                color: Color.fromARGB(255, 86, 77, 74),
-              ),
-              Row(
+              Column(
                 children: [
-                  Icon(Icons.food_bank_rounded),
-                  Text("Servings"),
-                  Spacer(),
-                  Text('4'),
+                  const Text(
+                    "Fat",
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: Color.fromARGB(255, 86, 77, 74),
+                      fontWeight: FontWeight.bold
+                    )
+                  ),
+                  Text(widget.recipe.fat!, style: const TextStyle(fontSize: 40.0, color: Color.fromARGB(255, 239, 149, 156))),
                 ],
-              ),
-              Divider(
-                thickness: 0.5,
-                color: Color.fromARGB(255, 86, 77, 74),
               ),
             ],
           ),
-          Spacer(),
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    Text("Protein", style: TextStyle(fontSize: 20.0),),
-                    Text("28g", style: TextStyle(fontSize: 40.0, color: Color.fromARGB(255, 150, 171, 217)),),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    Text("Carbs", style: TextStyle(fontSize: 20.0),),
-                    Text("7g", style: TextStyle(fontSize: 40.0, color: Color.fromARGB(255, 150, 171, 217)),),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    Text("Fat", style: TextStyle(fontSize: 20.0),),
-                    Text("32g", style: TextStyle(fontSize: 40.0, color: Color.fromARGB(255, 150, 171, 217)),),
-                  ],
-                ),
-              )
-            ],
-          )
-        ],
-      )
+        ),
+      ],
     );
   }
 

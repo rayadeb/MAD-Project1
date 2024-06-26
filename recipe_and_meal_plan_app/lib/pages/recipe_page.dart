@@ -76,25 +76,30 @@ class _RecipePageState extends State<RecipePage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Recipes", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0, color: Color.fromARGB(255, 86, 77, 74))),
-        backgroundColor: const Color.fromARGB(255, 239, 244, 250),
+        title: const Text("Recipes", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0, color: Color(0xFF4D4D4D))),
+        backgroundColor: const Color(0xFFDDEFDD),
+        elevation: 5,
+        shadowColor: Colors.grey.withOpacity(0.5),
       ),
       body: Column(
         children: [
-          TextField(
-            decoration: InputDecoration(
-              hintText: "Search recipes...",
-              prefixIcon: const Icon(Icons.search),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30.0),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: "Search recipes...",
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
               ),
+              onChanged: (value) {
+                setState(() {
+                  _searchQuery = value;
+                });
+              },
             ),
-            onChanged: (value) {
-              setState(() {
-                _searchQuery = value;
-              });
-            },
-          ), // Search funcitonality
+          ),
           Expanded(
             child: FutureBuilder<List<Recipe>>(
               future: getRecipes(_searchQuery),

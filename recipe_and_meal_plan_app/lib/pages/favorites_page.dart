@@ -50,25 +50,30 @@ class _FavoritePageState extends State<FavoritePage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Favorites", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0, color: Color.fromARGB(255, 86, 77, 74))),
-        backgroundColor: const Color.fromARGB(255, 239, 244, 250),
+        title: const Text("Favorites", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0, color: Color(0xFF4D4D4D))),
+        backgroundColor: const Color(0xFFDDEFDD),
+        elevation: 5,
+        shadowColor: Colors.grey.withOpacity(0.5),
       ),
       body: Column(
         children: [
-          TextField(
-            decoration: InputDecoration(
-              hintText: "Search recipes...",
-              prefixIcon: const Icon(Icons.search),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30.0),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: "Search recipes...",
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
               ),
-            ),
-            onChanged: (value) {
-              setState(() {
-                _searchQuery = value;
-              });
-            },
-          ), // Search funcitonality
+              onChanged: (value) {
+                setState(() {
+                  _searchQuery = value;
+                });
+              },
+            ), 
+          ),
           Expanded(
             child: FutureBuilder<List<Recipe>>(
               future: getRecipes(_searchQuery),
@@ -86,7 +91,7 @@ class _FavoritePageState extends State<FavoritePage> {
                   crossAxisCount: 2,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
-                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                   children: recipes.map((recipe) => buildGridItem(recipe)).toList(),
                   );
               }
