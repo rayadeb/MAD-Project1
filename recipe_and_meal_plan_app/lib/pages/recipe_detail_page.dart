@@ -37,11 +37,6 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
                 fit: BoxFit.cover,
                 height: 200.0,
               ),
-              const Positioned(
-                top: 20.0,
-                right: 20.0,
-                child: Icon(Icons.favorite, color: Colors.red,),
-              ),
             ],
           ),
           TabBar(
@@ -55,39 +50,6 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
           buildTabBar(),
         ],
       ),
-      // floatingActionButton: PopupMenuButton<int>(
-      //   onSelected: (item) => onFabMenuItemSelected(item),
-      //   icon: const Icon(Icons.add),
-      //   itemBuilder: (context) => [
-      //     const PopupMenuItem(
-      //       value: 1,
-      //       child: Row(
-      //         children: [
-      //           Icon(Icons.add_box_rounded),
-      //           Text("Add to Breakfast"),
-      //         ],
-      //       ),
-      //     ),
-      //     const PopupMenuItem(
-      //       value: 1,
-      //       child: Row(
-      //         children: [
-      //           Icon(Icons.add_box_rounded),
-      //           Text("Add to Lunch"),
-      //         ],
-      //       ),
-      //     ),
-      //     const PopupMenuItem(
-      //       value: 1,
-      //       child: Row(
-      //         children: [
-      //           Icon(Icons.add_box_rounded),
-      //           Text("Add to Dinner"),
-      //         ],
-      //       ),
-      //     ),
-      //   ],
-      // ),
     );
   }
 
@@ -112,25 +74,6 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
           // buildDirectionTab(),
         ],
       ),
-      // child: TabBarView(
-      //   controller: _controller,
-      //   children: [
-      //     Container(
-      //       padding: const EdgeInsets.all(20.0),
-      //       child: buildOverviewTab(),
-      //     ),
-      //     Container(
-      //       padding: const EdgeInsets.all(20.0),
-      //       child: buildIngredientsTab(),
-      //     ),
-      //     Container(
-      //       padding: const EdgeInsets.all(20.0),
-      //       child: buildDirectionTab(),
-      //     ),
-      //     // buildIngredientsTab(),
-      //     // buildDirectionTab(),
-      //   ],
-      // )
     );
   }
 

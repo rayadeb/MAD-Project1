@@ -75,7 +75,7 @@ class _DashboardState extends State<Dashboard> {
       const GroceryPage(),
       MealPlanPage(isar: widget.isar),
       RecipePage(isar: widget.isar, fromMealPlanPage: false, selectedDate: null, value: null,),
-      const FavoritePage(),
+      FavoritePage(isar: widget.isar),
     ];
   }
 

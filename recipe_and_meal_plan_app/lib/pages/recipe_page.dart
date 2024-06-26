@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:recipe_and_meal_plan_app/meal_plan.dart';
 import 'package:recipe_and_meal_plan_app/pages/recipe_detail_page.dart';
 import 'package:recipe_and_meal_plan_app/recipe.dart';
@@ -115,7 +112,7 @@ class _RecipePageState extends State<RecipePage> {
                   crossAxisCount: 2,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
-                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                   children: recipes.map((recipe) => buildGridItem(recipe)).toList(),
                   );
               }
@@ -158,14 +155,30 @@ class _RecipePageState extends State<RecipePage> {
             Positioned(
               bottom: 10.0,
               left: 10.0,
-              child: Text(
-                recipe.title!,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20.0,
-                  
-                )
+              right: 10.0,
+              child: Container(
+                padding: const EdgeInsets.all(4.0),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Text(
+                  recipe.title!,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                    shadows: [
+                      Shadow(
+                        blurRadius: 4.0,
+                        color: Colors.black,
+                        offset: Offset(2.0, 2.0),
+                      )
+                    ],
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                ),
               ),
             ),
             Positioned(
@@ -243,14 +256,5 @@ class _RecipePageState extends State<RecipePage> {
         print("Setting _didChangeMealPlan to true");
       });
     });
-  }
-}
-
-class TestPage extends StatelessWidget {
-  const TestPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }
