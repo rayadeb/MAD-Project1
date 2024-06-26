@@ -9,7 +9,8 @@ const String RECIPE_DATA = 'assets/formatted_recipe_data.json';
 
 class RecipePage extends StatefulWidget {
   final Isar isar;
-  const RecipePage({super.key, required this.isar});
+  final bool fromMealPlanPage;
+  const RecipePage({super.key, required this.isar, required this.fromMealPlanPage});
 
   @override
   State<RecipePage> createState() => _RecipePageState();
@@ -87,10 +88,17 @@ class _RecipePageState extends State<RecipePage> {
   Widget buildGridItem(Recipe recipe) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => RecipeDetail(recipe: recipe))
-        );
+        if (widget.fromMealPlanPage) {
+          addToMealPlan();
+          Navigator.pop(context);
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RecipeDetail(recipe: recipe)
+            )
+          );
+        }
       },
       child: Card(
         shape: RoundedRectangleBorder(
@@ -126,6 +134,11 @@ class _RecipePageState extends State<RecipePage> {
         ),
       ),
     );
+  }
+
+  void addToMealPlan() {
+    print('a');
+    // final isar = await Isar.open([MealPlanSc], directory: directory)
   }
 }
 

@@ -55,38 +55,62 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
           buildTabBar(),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: const Color.fromARGB(255, 188, 227, 187),
-        foregroundColor: const Color(0xFF4D4D4D),
-        child: const Icon(Icons.add),
-      ),
+      // floatingActionButton: PopupMenuButton<int>(
+      //   onSelected: (item) => onFabMenuItemSelected(item),
+      //   icon: const Icon(Icons.add),
+      //   itemBuilder: (context) => [
+      //     const PopupMenuItem(
+      //       value: 1,
+      //       child: Row(
+      //         children: [
+      //           Icon(Icons.add_box_rounded),
+      //           Text("Add to Breakfast"),
+      //         ],
+      //       ),
+      //     ),
+      //     const PopupMenuItem(
+      //       value: 1,
+      //       child: Row(
+      //         children: [
+      //           Icon(Icons.add_box_rounded),
+      //           Text("Add to Lunch"),
+      //         ],
+      //       ),
+      //     ),
+      //     const PopupMenuItem(
+      //       value: 1,
+      //       child: Row(
+      //         children: [
+      //           Icon(Icons.add_box_rounded),
+      //           Text("Add to Dinner"),
+      //         ],
+      //       ),
+      //     ),
+      //   ],
+      // ),
     );
   }
 
   Widget buildTabBar() {
     return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 100.0),
-        child: TabBarView(
-          controller: _controller,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(20.0),
-              child: buildOverviewTab(),
-            ),
-            Container(
-              padding: const EdgeInsets.all(20.0),
-              child: buildIngredientsTab(),
-            ),
-            Container(
-              padding: const EdgeInsets.all(20.0),
-              child: buildDirectionTab(),
-            ),
-            // buildIngredientsTab(),
-            // buildDirectionTab(),
-          ],
-        ),
+      child: TabBarView(
+        controller: _controller,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(20.0),
+            child: buildOverviewTab(),
+          ),
+          Container(
+            padding: const EdgeInsets.all(20.0),
+            child: buildIngredientsTab(),
+          ),
+          Container(
+            padding: const EdgeInsets.all(20.0),
+            child: buildDirectionTab(),
+          ),
+          // buildIngredientsTab(),
+          // buildDirectionTab(),
+        ],
       ),
       // child: TabBarView(
       //   controller: _controller,
@@ -244,7 +268,7 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
 
   Widget buildDirectionTab() {
     return Container(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(10.0),
       child: Column(
         children: [
           Expanded(
@@ -262,16 +286,19 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
     return Column(
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              (index + 1).toString(),
-              style: const TextStyle(
-                color: Color.fromARGB(255, 150, 171, 217),
-                fontSize: 40.0,
-                fontWeight: FontWeight.bold
+            SizedBox(
+              width: 40.0,
+              child: Text(
+                (index + 1).toString(),
+                style: const TextStyle(
+                  color: Color.fromARGB(255, 150, 171, 217),
+                  fontSize: 40.0,
+                  fontWeight: FontWeight.bold
+                ),
               ),
             ),
-            const SizedBox(width: 20.0,),
             Flexible(
               child : Text(
                 insData,

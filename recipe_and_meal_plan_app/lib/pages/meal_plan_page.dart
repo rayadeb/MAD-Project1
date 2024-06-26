@@ -54,19 +54,47 @@ class _MealPlanPageState extends State<MealPlanPage> {
           buildTile("DINNER"),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => RecipePage(isar: widget.isar),
-            )
-          );
-        },
-        backgroundColor: const Color.fromARGB(255, 188, 227, 187),
-        foregroundColor: const Color(0xFF4D4D4D),
-        child: const Icon(Icons.add),
+      floatingActionButton: PopupMenuButton<String>(
+        onSelected: (item) => onFabMenuItemSelected(item),
+        icon: const Icon(Icons.add),
+        itemBuilder: (context) => [
+          const PopupMenuItem(
+            value: "breakfast",
+            child: Text("Add to breakfast"),
+          ),
+          const PopupMenuItem(
+            value: "lunch",
+            child: Text("Add to lunch"),
+          ),
+          const PopupMenuItem(
+            value: "dinner",
+            child: Text("Add to dinner"),
+          ),
+        ],
       ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => RecipePage(isar: widget.isar),
+      //       )
+      //     );
+      //   },
+      //   backgroundColor: const Color.fromARGB(255, 188, 227, 187),
+      //   foregroundColor: const Color(0xFF4D4D4D),
+      //   child: const Icon(Icons.add),
+      // ),
+    );
+  }
+
+  void onFabMenuItemSelected(item) {
+    print(item);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => RecipePage(isar: widget.isar, fromMealPlanPage: true,)
+      )
     );
   }
 
