@@ -22,6 +22,7 @@ class RecipePage extends StatefulWidget {
 
 class _RecipePageState extends State<RecipePage> {
   bool _didChangeMealPlan = false;
+  String _searchQuery = "";
 
   Future<void> addRecipesFromJson(Isar isar) async {
     // Parse
@@ -37,8 +38,23 @@ class _RecipePageState extends State<RecipePage> {
     });
   }
 
-  Future<List<Recipe>> getRecipes() async {
+  Future<List<Recipe>> getAllRecipes() async {
     return await widget.isar.recipes.where().findAll();
+  }
+
+  Future<List<Recipe>> getRecipes(String query) async {
+    // await Future.delayed(const Duration(seconds: 1));
+    // final queryBuilder = widget.isar.recipes.filter().titleContains(query.toLowerCase());
+
+    if (query.isNotEmpty) {
+      return await widget.isar.recipes
+        .where()
+        .filter()
+        .titleContains(query, caseSensitive: false)
+        .findAll();
+    } else {
+      return await widget.isar.recipes.where().findAll();
+    }
   }
 
   // Future<List<Recipe>> getRecipes() async {
@@ -66,26 +82,47 @@ class _RecipePageState extends State<RecipePage> {
         title: const Text("Recipes", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0, color: Color.fromARGB(255, 86, 77, 74))),
         backgroundColor: const Color.fromARGB(255, 239, 244, 250),
       ),
-      body: FutureBuilder<List<Recipe>>(
-        future: getRecipes(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return const Center(child: Text("Error loading data"));
-          }
+      body: Column(
+        children: [
+          TextField(
+            decoration: InputDecoration(
+              hintText: "Search recipes...",
+              prefixIcon: const Icon(Icons.search),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              )
+            ),
+            onChanged: (value) {
+              setState(() {
+                _searchQuery = value;
+                print(_searchQuery);
+              });
+            },
+          ), // Search funcitonality
+          Expanded(
+            child: FutureBuilder<List<Recipe>>(
+              future: getRecipes(_searchQuery),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(child: Text("Error loading data"));
+                }
 
-          if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-          final List<Recipe> recipes = snapshot.data!;
-          return GridView.count(
-            crossAxisCount: 2,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-            children: recipes.map((recipe) => buildGridItem(recipe)).toList(),
-            );
-        }
+                final List<Recipe> recipes = snapshot.data!;
+                return GridView.count(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  children: recipes.map((recipe) => buildGridItem(recipe)).toList(),
+                  );
+              }
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -135,7 +172,7 @@ class _RecipePageState extends State<RecipePage> {
             Positioned(
               top: 10.0,
               right: 10.0,
-              child: Icon(Icons.star, color: Colors.yellow[600]),
+              child: Icon(Icons.bookmark_border_rounded, color: Colors.yellow[600], size: 36.0,),
             )
           ],
         ),
