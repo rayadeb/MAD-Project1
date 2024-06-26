@@ -256,7 +256,7 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
 
   Widget buildIngredientsTab() {
     return Container(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
       child: Column(
         children: [
           Expanded(
@@ -266,14 +266,31 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
             )
           ),
           Container(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.only(top: 2.0),
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 239, 244, 250),
+              ),
               onPressed: () {},
-              child: const FittedBox(
+              child: FittedBox(
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Icon(Icons.shopping_basket_rounded),
-                    Text("Add all to grocery list"),
+                    SizedBox(
+                      height: 30.0,
+                      child: Image.asset(
+                        "icons/add_bag.png",
+                        color: const Color.fromARGB(255, 239, 149, 156),
+                        colorBlendMode: BlendMode.srcIn,
+                      ),
+                    ),
+                    const Text(
+                      "Add all to grocery list",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 239, 149, 156),
+                      ),
+                    ),
                   ],
                 )
               ),
@@ -285,25 +302,61 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
   }
 
   Widget buildIngredientRow(String colData) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            const Icon(Icons.add_box_rounded),
-            Flexible(
-              child: Text(
-                colData,
-                overflow: TextOverflow.clip,
-              ),
-            ),
-          ],
+    return Padding(
+      padding: const EdgeInsets.only(top: 4.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.0),
+          color: const Color.fromARGB(255, 239, 244, 250),
         ),
-        const Divider(
-          thickness: 0.5,
-          color: Color.fromARGB(255, 86, 77, 74),
-        )
-      ],
+        child: ListTile(
+          leading: SizedBox(
+            height: 30.0,
+            child: Image.asset(
+              "icons/add_shopping.png",
+              color: const Color.fromARGB(255, 143, 199, 142),
+              colorBlendMode: BlendMode.srcIn,
+            ),
+          ),
+          title: Text(
+            colData,
+            overflow: TextOverflow.clip,
+            style: const TextStyle(
+              fontSize: 14.0,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 86, 77, 74),
+            ),
+          ),
+          // title: const Text(
+          //   "Servings",
+          //   style: TextStyle(
+          //     fontSize: 10.0,
+          //     fontWeight: FontWeight.bold,
+          //     color: Color.fromARGB(255, 86, 77, 74),
+          //   ),
+          // ),
+        ),
+      ),
     );
+    // return Column(
+    //   children: [
+    //     Row(
+    //       children: [
+    //         const Icon(Icons.add_box_rounded),
+    //         Flexible(
+    //           child: Text(
+    //             colData,
+    //             overflow: TextOverflow.clip,
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //     const Divider(
+    //       thickness: 0.5,
+    //       color: Color.fromARGB(255, 86, 77, 74),
+    //     )
+    //   ],
+    // );
   }
 
   Widget buildDirectionTab() {
