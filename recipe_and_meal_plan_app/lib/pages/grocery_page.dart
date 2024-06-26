@@ -77,7 +77,7 @@ class _GroceryPageState extends State<GroceryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: false,
+        centerTitle: true,
         title: Text(
           "Grocery List",
           style: GoogleFonts.inter(

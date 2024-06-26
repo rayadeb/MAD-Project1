@@ -24,10 +24,10 @@ class _MealPlanPageState extends State<MealPlanPage> {
   Recipe? lunch;
   Recipe? dinner;
 
-  Future<Recipe?> getRecipeById(int id) async {
-    final recipe = await widget.isar.recipes.where().idEqualTo(id).findFirst();
-    return recipe;
-  }
+  // Future<Recipe?> getRecipeById(int id) async {
+  //   final recipe = await widget.isar.recipes.where().idEqualTo(id).findFirst();
+  //   return recipe;
+  // }
 
   @override
   void initState() {
@@ -49,8 +49,10 @@ class _MealPlanPageState extends State<MealPlanPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Meal Plan", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0, color: Color.fromARGB(255, 86, 77, 74))),
-        backgroundColor: const Color.fromARGB(255, 239, 244, 250),
+        title: const Text("Meal Plan", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0, color: Color(0xFF4D4D4D))),
+        backgroundColor: const Color(0xFFDDEFDD),
+        elevation: 5,
+        shadowColor: Colors.grey.withOpacity(0.5),
       ),
       body: Column(
         children: [
@@ -58,37 +60,37 @@ class _MealPlanPageState extends State<MealPlanPage> {
           buildTiles(),
         ],
       ),
-      floatingActionButton: PopupMenuButton<int>(
-        onSelected: (item) => onFabMenuItemSelected(item),
-        icon: const Icon(Icons.add),
-        itemBuilder: (context) => [
-          const PopupMenuItem(
-            value: 1,
-            child: Text("Add to breakfast"),
-          ),
-          const PopupMenuItem(
-            value: 2,
-            child: Text("Add to lunch"),
-          ),
-          const PopupMenuItem(
-            value: 3,
-            child: Text("Add to dinner"),
-          ),
-        ],
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showMenu<int>(
+            context: context,
+            position: const RelativeRect.fromLTRB(110, 570, 110, 100),
+            items: [
+              const PopupMenuItem(
+                value: 1,
+                child: Text("Add to breakfast"),
+              ),
+              const PopupMenuItem(
+                value: 2,
+                child: Text("Add to lunch"),
+              ),
+              const PopupMenuItem(
+                value: 3,
+                child: Text("Add to dinner"),
+              ),
+            ],
+            elevation: 20.0,
+            color: const Color.fromARGB(255, 239, 244, 250),
+          ).then((value) {
+            if (value != null) {
+              onFabMenuItemSelected(value);
+            }
+          });
+        },
+        backgroundColor: const Color.fromARGB(255, 188, 227, 187),
+        foregroundColor: const Color(0xFF4D4D4D),
+        child: const Icon(Icons.add),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //         builder: (context) => RecipePage(isar: widget.isar),
-      //       )
-      //     );
-      //   },
-      //   backgroundColor: const Color.fromARGB(255, 188, 227, 187),
-      //   foregroundColor: const Color(0xFF4D4D4D),
-      //   child: const Icon(Icons.add),
-      // ),
     );
   }
 
@@ -101,7 +103,6 @@ class _MealPlanPageState extends State<MealPlanPage> {
       )
     );
 
-    print(didChangeMealPlan);
     if (didChangeMealPlan) {
       fetchData();
     }
@@ -125,46 +126,41 @@ class _MealPlanPageState extends State<MealPlanPage> {
     }
 
     TextStyle textStyle = TextStyle(
-      fontSize: 24.0,
+      fontSize: 22.0,
       // fontWeight: FontWeight.bold,
       overflow: TextOverflow.ellipsis,
       color: isSelected ? Colors.white : const Color.fromARGB(255, 86, 77, 74)
     );
 
     TextStyle dateStyle = TextStyle(
-      fontSize: 24.0,
+      fontSize: 22.0,
       fontWeight: FontWeight.bold,
       overflow: TextOverflow.ellipsis,
       color: isSelected ? Colors.white : const Color.fromARGB(255, 86, 77, 74)
     );
 
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(4.0, 0, 4.0, 0),
-      child: GestureDetector(
-        onTap: () => _onDateSelected(date),
-        child: Container(
-          height: 100.0,
-          width: capsuleWidth.floorToDouble(),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(50.0),
-            color: capsuleColor,
-            // gradient: const LinearGradient(
-            //   colors: [Color.fromARGB(255, 143, 199, 142), Colors.transparent],
-            //   begin: Alignment.topCenter,
-            //   end: Alignment.bottomCenter
-            // ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(day, style: textStyle),
-                Text(formattedDate, style: dateStyle),
-              ],
-            ),
-          )
+      
+    return GestureDetector(
+      onTap: () => _onDateSelected(date),
+      child: Container(
+        // height: 60.0,
+        width: capsuleWidth.floorToDouble(),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(40.0),
+          color: capsuleColor,
+          // gradient: const LinearGradient(
+          //   colors: [Color.fromARGB(255, 143, 199, 142), Colors.transparent],
+          //   begin: Alignment.topCenter,
+          //   end: Alignment.bottomCenter
+          // ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(day, style: textStyle),
+            Text(formattedDate, style: dateStyle),
+          ],
         ),
       ),
     );
@@ -212,40 +208,91 @@ class _MealPlanPageState extends State<MealPlanPage> {
       padding: const EdgeInsets.all(10.0),
       child: Column(
         children: [
-          ListTile(
-            title: Text("BREAKFAST", style: TextStyle(color: Colors.grey[400], fontWeight: FontWeight.bold)),
-            subtitle: Text(
-              breakfast?.title ?? "No meals planned yet",
-              style: const TextStyle(fontSize: 30.0),),
-            trailing: const Column(
-              children: [
-                Icon(Icons.fireplace_rounded),
-                Text("600 Cal")
-              ],
+          Padding(
+            padding: const EdgeInsets.only(top: 30.0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.0),
+                color: const Color.fromARGB(255, 239, 244, 250),
+              ),
+              child: ListTile(
+                title: Text("BREAKFAST", style: TextStyle(color: Colors.grey[400], fontWeight: FontWeight.bold)),
+                subtitle: Text(
+                  breakfast?.title ?? "No meals planned yet",
+                  style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
+                trailing: Column(
+                  children: [
+                    SizedBox(
+                      width: 40.0,
+                      child: Image.asset(
+                        "icons/calories.png",
+                        color: const Color.fromARGB(255, 143, 199, 142),
+                        colorBlendMode: BlendMode.srcIn,
+                        ),
+                    ),
+                    Text(breakfast?.calories != null ? "${breakfast?.calories} cal" : "No calories"),
+                    // Text(breakfast?.calories?.toString() ?? "No Calories")
+                  ],
+                ),
+              ),
             ),
           ),
-          ListTile(
-            title: Text("LUNCH", style: TextStyle(color: Colors.grey[400], fontWeight: FontWeight.bold)),
-            subtitle: Text(
-              lunch?.title ?? "No meals planned yet",
-              style: const TextStyle(fontSize: 30.0),),
-            trailing: const Column(
-              children: [
-                Icon(Icons.fireplace_rounded),
-                Text("600 Cal")
-              ],
+          Padding(
+            padding: const EdgeInsets.only(top: 30.0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.0),
+                color: const Color.fromARGB(255, 239, 244, 250),
+              ),
+              child: ListTile(
+                title: Text("LUNCH", style: TextStyle(color: Colors.grey[400], fontWeight: FontWeight.bold)),
+                subtitle: Text(
+                  lunch?.title ?? "No meals planned yet",
+                  style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
+                trailing: Column(
+                  children: [
+                    SizedBox(
+                      width: 40.0,
+                      child: Image.asset(
+                        "icons/calories.png",
+                        color: const Color.fromARGB(255, 143, 199, 142),
+                        colorBlendMode: BlendMode.srcIn,
+                        ),
+                    ),
+                    Text(lunch?.calories != null ? "${lunch?.calories} cal" : "No calories"),
+                    // Text(lunch?.calories?.toString() ?? "No Calories")
+                  ],
+                ),
+              ),
             ),
           ),
-          ListTile(
-            title: Text("DINNER", style: TextStyle(color: Colors.grey[400], fontWeight: FontWeight.bold)),
-            subtitle: Text(
-              dinner?.title ?? "No meals planned yet",
-              style: const TextStyle(fontSize: 30.0),),
-            trailing: const Column(
-              children: [
-                Icon(Icons.fireplace_rounded),
-                Text("600 Cal")
-              ],
+          Padding(
+            padding: const EdgeInsets.only(top: 30.0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.0),
+                color: const Color.fromARGB(255, 239, 244, 250),
+              ),
+              child: ListTile(
+                title: Text("DINNER", style: TextStyle(color: Colors.grey[400], fontWeight: FontWeight.bold)),
+                subtitle: Text(
+                  dinner?.title ?? "No meals planned yet",
+                  style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
+                trailing: Column(
+                  children: [
+                    SizedBox(
+                      width: 40.0,
+                      child: Image.asset(
+                        "icons/calories.png",
+                        color: const Color.fromARGB(255, 143, 199, 142),
+                        colorBlendMode: BlendMode.srcIn,
+                        ),
+                    ),
+                    Text(dinner?.calories != null ? "${dinner?.calories} cal" : "No calories"),
+                    // Text(dinner?.calories?.toString() ?? "No Calories")
+                  ],
+                ),
+              ),
             ),
           ),
         ],

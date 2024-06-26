@@ -88,6 +88,12 @@ class _DashboardState extends State<Dashboard> {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
+        selectedItemColor: const Color.fromARGB(255, 239, 149, 156),
+        backgroundColor: const Color(0xFFDDEFDD),
+        elevation: 5.0,
+        selectedFontSize: 18.0,
+        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+        iconSize: 50.0,
         onTap: (int newIndex) {
           setState(() {
             _currentIndex = newIndex;
@@ -97,29 +103,46 @@ class _DashboardState extends State<Dashboard> {
           BottomNavigationBarItem(
             label: "Groceries",
             icon: SizedBox(
-              height: 40.0,
-              child: Image.asset("icons/diet.png"),
+              height: 36.0,
+              child: Image.asset(
+                "icons/diet.png",
+                color: _currentIndex == 0 ? const Color.fromARGB(255, 239, 149, 156) : const Color.fromARGB(255, 86, 77, 74),
+                colorBlendMode: BlendMode.srcIn,
+                fit: BoxFit.contain,
+              ),
             ),
           ),
           BottomNavigationBarItem(
             label: "Meal Plan",
             icon: SizedBox(
-              height: 40.0,
-              child: Image.asset("icons/nutrition.png"),
+              height: 36.0,
+              child: Image.asset(
+                "icons/nutrition.png",
+                color: _currentIndex == 1 ? const Color.fromARGB(255, 239, 149, 156) : const Color.fromARGB(255, 86, 77, 74),
+                colorBlendMode: BlendMode.srcIn,
+              ),
             )
           ),
           BottomNavigationBarItem(
             label: "Recipes",
             icon: SizedBox(
-              height: 40.0,
-              child: Image.asset("icons/recipe.png")
+              height: 36.0,
+              child: Image.asset(
+                "icons/recipe.png",
+                color: _currentIndex == 2 ? const Color.fromARGB(255, 239, 149, 156) : const Color.fromARGB(255, 86, 77, 74),
+                colorBlendMode: BlendMode.srcIn,
+              )
             )
           ),
           BottomNavigationBarItem(
             label: "Favorites",
             icon: SizedBox(
-              height: 40.0,
-              child: Image.asset("icons/favorite.png")
+              height: 36.0,
+              child: Image.asset(
+                "icons/favorite.png",
+                color: _currentIndex == 3 ? const Color.fromARGB(255, 239, 149, 156) : const Color.fromARGB(255, 86, 77, 74),
+                colorBlendMode: BlendMode.srcIn,
+              )
             )
           ),
         ],
