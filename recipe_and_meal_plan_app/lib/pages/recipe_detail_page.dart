@@ -327,41 +327,14 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
               color: Color.fromARGB(255, 86, 77, 74),
             ),
           ),
-          // title: const Text(
-          //   "Servings",
-          //   style: TextStyle(
-          //     fontSize: 10.0,
-          //     fontWeight: FontWeight.bold,
-          //     color: Color.fromARGB(255, 86, 77, 74),
-          //   ),
-          // ),
         ),
       ),
     );
-    // return Column(
-    //   children: [
-    //     Row(
-    //       children: [
-    //         const Icon(Icons.add_box_rounded),
-    //         Flexible(
-    //           child: Text(
-    //             colData,
-    //             overflow: TextOverflow.clip,
-    //           ),
-    //         ),
-    //       ],
-    //     ),
-    //     const Divider(
-    //       thickness: 0.5,
-    //       color: Color.fromARGB(255, 86, 77, 74),
-    //     )
-    //   ],
-    // );
   }
 
   Widget buildDirectionTab() {
     return Container(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(0.0),
       child: Column(
         children: [
           Expanded(
@@ -376,35 +349,36 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
   }
 
   Widget buildDirectionRow(int index, String insData) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              width: 40.0,
-              child: Text(
-                (index + 1).toString(),
-                style: const TextStyle(
-                  color: Color.fromARGB(255, 150, 171, 217),
-                  fontSize: 40.0,
-                  fontWeight: FontWeight.bold
-                ),
-              ),
-            ),
-            Flexible(
-              child : Text(
-                insData,
-                overflow: TextOverflow.clip,
-                style: const TextStyle(
-                  fontSize: 16.0,
-                ),
-              ),
-            ),
-          ],
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.0),
+          color: const Color.fromARGB(255, 239, 244, 250),
         ),
-        const SizedBox(height: 20.0),
-      ],
+        child: ListTile(
+          leading: SizedBox(
+            width: 40.0,
+            child: Text(
+              (index + 1).toString(),
+              style: const TextStyle(
+                color: Color.fromARGB(255, 150, 171, 217),
+                fontSize: 40.0,
+                fontWeight: FontWeight.bold,
+              )
+            )
+          ),
+          title: Text(
+            insData,
+            overflow: TextOverflow.clip,
+            style: const TextStyle(
+              fontSize: 14.0,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 86, 77, 74),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
