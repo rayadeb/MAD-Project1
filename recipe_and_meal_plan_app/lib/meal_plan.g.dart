@@ -27,13 +27,18 @@ const MealPlanSchema = CollectionSchema(
       name: r'date',
       type: IsarType.dateTime,
     ),
-    r'dinnerId': PropertySchema(
+    r'dateInt': PropertySchema(
       id: 2,
+      name: r'dateInt',
+      type: IsarType.long,
+    ),
+    r'dinnerId': PropertySchema(
+      id: 3,
       name: r'dinnerId',
       type: IsarType.long,
     ),
     r'lunchId': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'lunchId',
       type: IsarType.long,
     )
@@ -69,8 +74,9 @@ void _mealPlanSerialize(
 ) {
   writer.writeLong(offsets[0], object.breakfastId);
   writer.writeDateTime(offsets[1], object.date);
-  writer.writeLong(offsets[2], object.dinnerId);
-  writer.writeLong(offsets[3], object.lunchId);
+  writer.writeLong(offsets[2], object.dateInt);
+  writer.writeLong(offsets[3], object.dinnerId);
+  writer.writeLong(offsets[4], object.lunchId);
 }
 
 MealPlan _mealPlanDeserialize(
@@ -82,9 +88,10 @@ MealPlan _mealPlanDeserialize(
   final object = MealPlan(
     breakfastId: reader.readLongOrNull(offsets[0]),
     date: reader.readDateTimeOrNull(offsets[1]),
-    dinnerId: reader.readLongOrNull(offsets[2]),
+    dateInt: reader.readLongOrNull(offsets[2]),
+    dinnerId: reader.readLongOrNull(offsets[3]),
     id: id,
-    lunchId: reader.readLongOrNull(offsets[3]),
+    lunchId: reader.readLongOrNull(offsets[4]),
   );
   return object;
 }
@@ -103,6 +110,8 @@ P _mealPlanDeserializeProp<P>(
     case 2:
       return (reader.readLongOrNull(offset)) as P;
     case 3:
+      return (reader.readLongOrNull(offset)) as P;
+    case 4:
       return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -330,6 +339,75 @@ extension MealPlanQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'date',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<MealPlan, MealPlan, QAfterFilterCondition> dateIntIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'dateInt',
+      ));
+    });
+  }
+
+  QueryBuilder<MealPlan, MealPlan, QAfterFilterCondition> dateIntIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'dateInt',
+      ));
+    });
+  }
+
+  QueryBuilder<MealPlan, MealPlan, QAfterFilterCondition> dateIntEqualTo(
+      int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'dateInt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<MealPlan, MealPlan, QAfterFilterCondition> dateIntGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'dateInt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<MealPlan, MealPlan, QAfterFilterCondition> dateIntLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'dateInt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<MealPlan, MealPlan, QAfterFilterCondition> dateIntBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'dateInt',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -576,6 +654,18 @@ extension MealPlanQuerySortBy on QueryBuilder<MealPlan, MealPlan, QSortBy> {
     });
   }
 
+  QueryBuilder<MealPlan, MealPlan, QAfterSortBy> sortByDateInt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dateInt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<MealPlan, MealPlan, QAfterSortBy> sortByDateIntDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dateInt', Sort.desc);
+    });
+  }
+
   QueryBuilder<MealPlan, MealPlan, QAfterSortBy> sortByDinnerId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'dinnerId', Sort.asc);
@@ -624,6 +714,18 @@ extension MealPlanQuerySortThenBy
   QueryBuilder<MealPlan, MealPlan, QAfterSortBy> thenByDateDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'date', Sort.desc);
+    });
+  }
+
+  QueryBuilder<MealPlan, MealPlan, QAfterSortBy> thenByDateInt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dateInt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<MealPlan, MealPlan, QAfterSortBy> thenByDateIntDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dateInt', Sort.desc);
     });
   }
 
@@ -678,6 +780,12 @@ extension MealPlanQueryWhereDistinct
     });
   }
 
+  QueryBuilder<MealPlan, MealPlan, QDistinct> distinctByDateInt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'dateInt');
+    });
+  }
+
   QueryBuilder<MealPlan, MealPlan, QDistinct> distinctByDinnerId() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'dinnerId');
@@ -708,6 +816,12 @@ extension MealPlanQueryProperty
   QueryBuilder<MealPlan, DateTime?, QQueryOperations> dateProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'date');
+    });
+  }
+
+  QueryBuilder<MealPlan, int?, QQueryOperations> dateIntProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'dateInt');
     });
   }
 

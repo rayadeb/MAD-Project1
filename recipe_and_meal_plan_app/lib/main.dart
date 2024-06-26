@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe_and_meal_plan_app/meal_plan.dart';
 import 'package:recipe_and_meal_plan_app/pages/grocery_page.dart';
 import 'package:recipe_and_meal_plan_app/pages/meal_plan_page.dart';
 import 'package:recipe_and_meal_plan_app/pages/recipe_page.dart';
@@ -24,7 +25,7 @@ class DatesProvider extends ChangeNotifier {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final dir = await getApplicationCacheDirectory();
-  final isar = await Isar.open([RecipeSchema], directory: dir.path);
+  final isar = await Isar.open([RecipeSchema, MealPlanSchema], directory: dir.path);
 
   runApp(
     MultiProvider(
@@ -73,7 +74,7 @@ class _DashboardState extends State<Dashboard> {
     pages = [
       const GroceryPage(),
       MealPlanPage(isar: widget.isar),
-      RecipePage(isar: widget.isar, fromMealPlanPage: false,),
+      RecipePage(isar: widget.isar, fromMealPlanPage: false, selectedDate: null, value: null,),
       const FavoritePage(),
     ];
   }

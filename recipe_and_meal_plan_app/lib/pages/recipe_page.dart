@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:recipe_and_meal_plan_app/meal_plan.dart';
 import 'package:recipe_and_meal_plan_app/pages/recipe_detail_page.dart';
 import 'package:recipe_and_meal_plan_app/recipe.dart';
 
@@ -10,13 +12,16 @@ const String RECIPE_DATA = 'assets/formatted_recipe_data.json';
 class RecipePage extends StatefulWidget {
   final Isar isar;
   final bool fromMealPlanPage;
-  const RecipePage({super.key, required this.isar, required this.fromMealPlanPage});
+  final DateTime? selectedDate;
+  final int? value;
+  const RecipePage({super.key, required this.isar, required this.fromMealPlanPage, required this.selectedDate, required this.value});
 
   @override
   State<RecipePage> createState() => _RecipePageState();
 }
 
 class _RecipePageState extends State<RecipePage> {
+  bool _didChangeMealPlan = false;
 
   Future<void> addRecipesFromJson(Isar isar) async {
     // Parse
@@ -89,8 +94,10 @@ class _RecipePageState extends State<RecipePage> {
     return GestureDetector(
       onTap: () {
         if (widget.fromMealPlanPage) {
-          addToMealPlan();
-          Navigator.pop(context);
+          addToMealPlan(recipe);
+          Future.delayed(const Duration(milliseconds: 100), () {
+            Navigator.pop(context, _didChangeMealPlan);
+          });
         } else {
           Navigator.push(
             context,
@@ -136,9 +143,53 @@ class _RecipePageState extends State<RecipePage> {
     );
   }
 
-  void addToMealPlan() {
-    print('a');
-    // final isar = await Isar.open([MealPlanSc], directory: directory)
+  Future<void> addToMealPlan(Recipe recipe) async {
+    // final dir = await getApplicationCacheDirectory();
+    // final isar = await Isar.open([MealPlanSchema], directory: dir.path);
+
+    await widget.isar.writeTxn(() async {
+      final DateTime selectedDateWithoutTime = DateTime(
+        widget.selectedDate!.year,
+        widget.selectedDate!.month,
+        widget.selectedDate!.day,
+      );
+
+      final existingPlan = await widget.isar.mealPlans
+        .where()
+        .filter()
+        .dateEqualTo(selectedDateWithoutTime)
+        .findFirst();
+
+      if (existingPlan != null) {
+        switch (widget.value) {
+          case 1:
+            existingPlan.breakfastId = recipe.id;
+            break;
+          case 2:
+            existingPlan.lunchId = recipe.id;
+            break;
+          case 3:
+            existingPlan.dinnerId = recipe.id;
+            break;
+        }
+        await widget.isar.mealPlans.put(existingPlan);
+        print("Updated meal plan for $selectedDateWithoutTime");
+      } else {
+        await widget.isar.mealPlans.put(
+          MealPlan(
+            date: selectedDateWithoutTime,
+            breakfastId: widget.value == 1 ? recipe.id : null,
+            lunchId: widget.value == 2 ? recipe.id : null,
+            dinnerId: widget.value == 3 ? recipe.id : null
+          )
+        );
+        print("Added new meal plan for $selectedDateWithoutTime");
+      }
+      setState(() {
+        _didChangeMealPlan = true;
+        print("Setting _didChangeMealPlan to true");
+      });
+    });
   }
 }
 

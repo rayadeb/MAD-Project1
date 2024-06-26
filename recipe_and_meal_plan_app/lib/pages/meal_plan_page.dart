@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_and_meal_plan_app/main.dart';
+import 'package:recipe_and_meal_plan_app/meal_plan.dart';
 import 'package:recipe_and_meal_plan_app/pages/recipe_page.dart';
 import 'package:recipe_and_meal_plan_app/recipe.dart';
 
@@ -18,6 +19,10 @@ class _MealPlanPageState extends State<MealPlanPage> {
   // final DatesProvider _datesProvider = DatesProvider();
   final ScrollController _scrollController = ScrollController();
   DateTime? _selectedDate;
+  MealPlan? mealPlan;
+  Recipe? breakfast;
+  Recipe? lunch;
+  Recipe? dinner;
 
   Future<Recipe?> getRecipeById(int id) async {
     final recipe = await widget.isar.recipes.where().idEqualTo(id).findFirst();
@@ -29,6 +34,7 @@ class _MealPlanPageState extends State<MealPlanPage> {
     super.initState();
     _scrollController.addListener(_onScroll);
     _selectedDate = DateTime.now();
+    fetchData();
   }
 
   @override
@@ -49,25 +55,23 @@ class _MealPlanPageState extends State<MealPlanPage> {
       body: Column(
         children: [
           buildWeekView(),
-          buildTile("BREAKFAST"),
-          buildTile("LUNCH"),
-          buildTile("DINNER"),
+          buildTiles(),
         ],
       ),
-      floatingActionButton: PopupMenuButton<String>(
+      floatingActionButton: PopupMenuButton<int>(
         onSelected: (item) => onFabMenuItemSelected(item),
         icon: const Icon(Icons.add),
         itemBuilder: (context) => [
           const PopupMenuItem(
-            value: "breakfast",
+            value: 1,
             child: Text("Add to breakfast"),
           ),
           const PopupMenuItem(
-            value: "lunch",
+            value: 2,
             child: Text("Add to lunch"),
           ),
           const PopupMenuItem(
-            value: "dinner",
+            value: 3,
             child: Text("Add to dinner"),
           ),
         ],
@@ -88,14 +92,19 @@ class _MealPlanPageState extends State<MealPlanPage> {
     );
   }
 
-  void onFabMenuItemSelected(item) {
-    print(item);
-    Navigator.push(
+  void onFabMenuItemSelected(item) async {
+    // print(item);
+    final didChangeMealPlan = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => RecipePage(isar: widget.isar, fromMealPlanPage: true,)
+        builder: (context) => RecipePage(isar: widget.isar, fromMealPlanPage: true, selectedDate: _selectedDate, value: item,)
       )
     );
+
+    print(didChangeMealPlan);
+    if (didChangeMealPlan) {
+      fetchData();
+    }
   }
 
   Widget buildCapsuleView(DateTime date) {
@@ -165,6 +174,7 @@ class _MealPlanPageState extends State<MealPlanPage> {
     setState(() {
       _selectedDate = date;
     });
+    fetchData();
   }
 
   Widget buildWeekView() {
@@ -192,21 +202,52 @@ class _MealPlanPageState extends State<MealPlanPage> {
     );
   }
 
-  Widget buildTile(String title) {
+  Widget buildTiles() {
+
+    // String breakfastText = breakfast?.title ?? "No meals planned yet";
+    // String lunchText = lunch?.title ?? "No meals planned yet";
+    // String dinnerText = dinner?.title ?? "No meals planned yet";
+
     return Container(
       padding: const EdgeInsets.all(10.0),
       child: Column(
         children: [
           ListTile(
-            title: Text(title, style: TextStyle(color: Colors.grey[400], fontWeight: FontWeight.bold)),
-            subtitle: const Text("data", style: TextStyle(fontSize: 30.0),),
+            title: Text("BREAKFAST", style: TextStyle(color: Colors.grey[400], fontWeight: FontWeight.bold)),
+            subtitle: Text(
+              breakfast?.title ?? "No meals planned yet",
+              style: const TextStyle(fontSize: 30.0),),
             trailing: const Column(
               children: [
                 Icon(Icons.fireplace_rounded),
                 Text("600 Cal")
               ],
             ),
-          )
+          ),
+          ListTile(
+            title: Text("LUNCH", style: TextStyle(color: Colors.grey[400], fontWeight: FontWeight.bold)),
+            subtitle: Text(
+              lunch?.title ?? "No meals planned yet",
+              style: const TextStyle(fontSize: 30.0),),
+            trailing: const Column(
+              children: [
+                Icon(Icons.fireplace_rounded),
+                Text("600 Cal")
+              ],
+            ),
+          ),
+          ListTile(
+            title: Text("DINNER", style: TextStyle(color: Colors.grey[400], fontWeight: FontWeight.bold)),
+            subtitle: Text(
+              dinner?.title ?? "No meals planned yet",
+              style: const TextStyle(fontSize: 30.0),),
+            trailing: const Column(
+              children: [
+                Icon(Icons.fireplace_rounded),
+                Text("600 Cal")
+              ],
+            ),
+          ),
         ],
       )
     );
@@ -217,5 +258,42 @@ class _MealPlanPageState extends State<MealPlanPage> {
       final datesProvider = Provider.of<DatesProvider>(context, listen: false);
       datesProvider.loadMoreDates(10);
     }
+  }
+
+  Future<void> fetchData() async {
+    final DateTime selectedDateWithoutTime = DateTime(
+      _selectedDate!.year,
+      _selectedDate!.month,
+      _selectedDate!.day,
+    );
+
+    final fetchedPlan = await widget.isar.mealPlans
+      .where()
+      .filter()
+      .dateEqualTo(selectedDateWithoutTime)
+      .findFirst();
+    
+    Recipe? breakfastRecipe;
+    Recipe? lunchRecipe;
+    Recipe? dinnerRecipe;
+
+    if (fetchedPlan != null) {
+      if (fetchedPlan.breakfastId != null) {
+        breakfastRecipe = await widget.isar.recipes.get(fetchedPlan.breakfastId!);
+      }
+      if (fetchedPlan.lunchId != null) {
+        lunchRecipe = await widget.isar.recipes.get(fetchedPlan.lunchId!);
+      }
+      if (fetchedPlan.dinnerId != null) {
+        dinnerRecipe = await widget.isar.recipes.get(fetchedPlan.dinnerId!);
+      }
+    }
+    
+    setState(() {
+      mealPlan = fetchedPlan;
+      breakfast = breakfastRecipe;
+      lunch = lunchRecipe;
+      dinner = dinnerRecipe;
+    });
   }
 }
