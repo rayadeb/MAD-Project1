@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_and_meal_plan_app/main.dart';
+import 'package:recipe_and_meal_plan_app/pages/recipe_page.dart';
+import 'package:recipe_and_meal_plan_app/recipe.dart';
 
 class MealPlanPage extends StatefulWidget {
-  const MealPlanPage({super.key});
+  final Isar isar;
+  const MealPlanPage({super.key, required this.isar});
 
   @override
   State<MealPlanPage> createState() => _MealPlanPageState();
@@ -15,10 +19,16 @@ class _MealPlanPageState extends State<MealPlanPage> {
   final ScrollController _scrollController = ScrollController();
   DateTime? _selectedDate;
 
+  Future<Recipe?> getRecipeById(int id) async {
+    final recipe = await widget.isar.recipes.where().idEqualTo(id).findFirst();
+    return recipe;
+  }
+
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
+    _selectedDate = DateTime.now();
   }
 
   @override
@@ -39,10 +49,23 @@ class _MealPlanPageState extends State<MealPlanPage> {
       body: Column(
         children: [
           buildWeekView(),
-          const Expanded(
-            child: Text('Breakfast'),
-          )
+          buildTile("BREAKFAST"),
+          buildTile("LUNCH"),
+          buildTile("DINNER"),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RecipePage(isar: widget.isar),
+            )
+          );
+        },
+        backgroundColor: const Color.fromARGB(255, 188, 227, 187),
+        foregroundColor: const Color(0xFF4D4D4D),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -83,19 +106,19 @@ class _MealPlanPageState extends State<MealPlanPage> {
       child: GestureDetector(
         onTap: () => _onDateSelected(date),
         child: Container(
-          height: 120.0,
+          height: 100.0,
           width: capsuleWidth.floorToDouble(),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(40.0),
+            borderRadius: BorderRadius.circular(50.0),
             color: capsuleColor,
             // gradient: const LinearGradient(
-            //   colors: [Color.fromARGB(255, 86, 77, 74), Color.fromARGB(255, 239, 244, 250)],
-            //   begin: Alignment.topLeft,
-            //   end: Alignment.bottomRight
+            //   colors: [Color.fromARGB(255, 143, 199, 142), Colors.transparent],
+            //   begin: Alignment.topCenter,
+            //   end: Alignment.bottomCenter
             // ),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(2.0),
+            padding: const EdgeInsets.all(6.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -138,6 +161,26 @@ class _MealPlanPageState extends State<MealPlanPage> {
           ),
         );
       }
+    );
+  }
+
+  Widget buildTile(String title) {
+    return Container(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        children: [
+          ListTile(
+            title: Text(title, style: TextStyle(color: Colors.grey[400], fontWeight: FontWeight.bold)),
+            subtitle: const Text("data", style: TextStyle(fontSize: 30.0),),
+            trailing: const Column(
+              children: [
+                Icon(Icons.fireplace_rounded),
+                Text("600 Cal")
+              ],
+            ),
+          )
+        ],
+      )
     );
   }
 

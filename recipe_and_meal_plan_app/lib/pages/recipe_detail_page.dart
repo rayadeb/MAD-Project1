@@ -55,22 +55,58 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
           buildTabBar(),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: const Color.fromARGB(255, 188, 227, 187),
+        foregroundColor: const Color(0xFF4D4D4D),
+        child: const Icon(Icons.add),
+      ),
     );
   }
 
   Widget buildTabBar() {
     return Expanded(
-      child: TabBarView(
-        controller: _controller,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(20.0),
-            child: buildOverviewTab(),
-          ),
-          buildIngredientsTab(),
-          buildDirectionTab(),
-        ],
-      )
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 100.0),
+        child: TabBarView(
+          controller: _controller,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20.0),
+              child: buildOverviewTab(),
+            ),
+            Container(
+              padding: const EdgeInsets.all(20.0),
+              child: buildIngredientsTab(),
+            ),
+            Container(
+              padding: const EdgeInsets.all(20.0),
+              child: buildDirectionTab(),
+            ),
+            // buildIngredientsTab(),
+            // buildDirectionTab(),
+          ],
+        ),
+      ),
+      // child: TabBarView(
+      //   controller: _controller,
+      //   children: [
+      //     Container(
+      //       padding: const EdgeInsets.all(20.0),
+      //       child: buildOverviewTab(),
+      //     ),
+      //     Container(
+      //       padding: const EdgeInsets.all(20.0),
+      //       child: buildIngredientsTab(),
+      //     ),
+      //     Container(
+      //       padding: const EdgeInsets.all(20.0),
+      //       child: buildDirectionTab(),
+      //     ),
+      //     // buildIngredientsTab(),
+      //     // buildDirectionTab(),
+      //   ],
+      // )
     );
   }
 

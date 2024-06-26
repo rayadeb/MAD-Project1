@@ -4,6 +4,9 @@ import 'package:recipe_and_meal_plan_app/pages/grocery_page.dart';
 import 'package:recipe_and_meal_plan_app/pages/meal_plan_page.dart';
 import 'package:recipe_and_meal_plan_app/pages/recipe_page.dart';
 import 'package:recipe_and_meal_plan_app/pages/favorites_page.dart';
+import 'package:isar/isar.dart';
+import 'package:recipe_and_meal_plan_app/recipe.dart';
+import 'package:path_provider/path_provider.dart';
 
 class DatesProvider extends ChangeNotifier {
   final List<DateTime> _dates = List<DateTime>.generate(7, (index) => DateTime.now().add(Duration(days: index)));
@@ -18,8 +21,10 @@ class DatesProvider extends ChangeNotifier {
   }
 }
 
-void main() {
-  // final datesProvider = DatesProvider();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final dir = await getApplicationCacheDirectory();
+  final isar = await Isar.open([RecipeSchema], directory: dir.path);
 
   runApp(
     MultiProvider(
@@ -33,22 +38,16 @@ void main() {
         theme: ThemeData(
           useMaterial3: true
         ),
-        home: const Dashboard(),
+        home: Dashboard(isar: isar),
       ),
     )
   );
-
-  // runApp(MaterialApp(
-  //   debugShowCheckedModeBanner: false,
-  //   theme: ThemeData(
-  //     useMaterial3: true
-  //   ),
-  //   home: Dashboard(datesProvider: datesProvider),
-  // ));
 }
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+  final Isar isar;
+
+  const Dashboard({super.key, required this.isar});
 
   // final DatesProvider datesProvider;
 
@@ -59,12 +58,25 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
 
   int _currentIndex = 1; // default landing page "Meals Plan"
-  final List<Widget> pages = const [
-    GroceryPage(),
-    MealPlanPage(),
-    RecipePage(),
-    FavoritePage(),
-  ];
+  late List<Widget> pages;
+
+  // final List<Widget> pages = const [
+  //   GroceryPage(),
+  //   MealPlanPage(),
+  //   RecipePage(isar: isar),
+  //   FavoritePage(),
+  // ];
+
+  @override
+  void initState() {
+    super.initState();
+    pages = [
+      const GroceryPage(),
+      MealPlanPage(isar: widget.isar),
+      RecipePage(isar: widget.isar),
+      const FavoritePage(),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
