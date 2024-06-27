@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe_and_meal_plan_app/database_helper.dart';
 import 'package:recipe_and_meal_plan_app/grocery_item.dart';
 import 'package:recipe_and_meal_plan_app/meal_plan.dart';
 import 'package:recipe_and_meal_plan_app/pages/grocery_page.dart';
@@ -28,8 +29,14 @@ class DatesProvider extends ChangeNotifier {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Isar instance
   final dir = await getApplicationCacheDirectory();
   final isar = await Isar.open([RecipeSchema, MealPlanSchema, GroceryItemSchema], directory: dir.path);
+
+  // Initialize DatabaseHelper
+  final databaseHelper = DatabaseHelper(isar);
+  // databaseHelper.wipeDatabase();
 
   runApp(
     MultiProvider(
@@ -37,6 +44,7 @@ void main() async {
         ChangeNotifierProvider(
           create: (_) => DatesProvider(),
         ),
+        Provider<DatabaseHelper>.value(value: databaseHelper),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

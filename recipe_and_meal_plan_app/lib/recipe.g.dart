@@ -85,7 +85,7 @@ const RecipeSchema = CollectionSchema(
     r'totalTimeMinutes': PropertySchema(
       id: 13,
       name: r'totalTimeMinutes',
-      type: IsarType.long,
+      type: IsarType.string,
     )
   },
   estimateSize: _recipeEstimateSize,
@@ -168,6 +168,12 @@ int _recipeEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  {
+    final value = object.totalTimeMinutes;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -190,7 +196,7 @@ void _recipeSerialize(
   writer.writeString(offsets[10], object.protein);
   writer.writeDouble(offsets[11], object.ratingStars);
   writer.writeString(offsets[12], object.title);
-  writer.writeLong(offsets[13], object.totalTimeMinutes);
+  writer.writeString(offsets[13], object.totalTimeMinutes);
 }
 
 Recipe _recipeDeserialize(
@@ -214,7 +220,7 @@ Recipe _recipeDeserialize(
     protein: reader.readStringOrNull(offsets[10]),
     ratingStars: reader.readDoubleOrNull(offsets[11]),
     title: reader.readStringOrNull(offsets[12]),
-    totalTimeMinutes: reader.readLongOrNull(offsets[13]),
+    totalTimeMinutes: reader.readStringOrNull(offsets[13]),
   );
   return object;
 }
@@ -253,7 +259,7 @@ P _recipeDeserializeProp<P>(
     case 12:
       return (reader.readStringOrNull(offset)) as P;
     case 13:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -2080,47 +2086,55 @@ extension RecipeQueryFilter on QueryBuilder<Recipe, Recipe, QFilterCondition> {
   }
 
   QueryBuilder<Recipe, Recipe, QAfterFilterCondition> totalTimeMinutesEqualTo(
-      int? value) {
+    String? value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'totalTimeMinutes',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<Recipe, Recipe, QAfterFilterCondition>
       totalTimeMinutesGreaterThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'totalTimeMinutes',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<Recipe, Recipe, QAfterFilterCondition> totalTimeMinutesLessThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'totalTimeMinutes',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<Recipe, Recipe, QAfterFilterCondition> totalTimeMinutesBetween(
-    int? lower,
-    int? upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -2129,6 +2143,78 @@ extension RecipeQueryFilter on QueryBuilder<Recipe, Recipe, QFilterCondition> {
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Recipe, Recipe, QAfterFilterCondition>
+      totalTimeMinutesStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'totalTimeMinutes',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Recipe, Recipe, QAfterFilterCondition> totalTimeMinutesEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'totalTimeMinutes',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Recipe, Recipe, QAfterFilterCondition> totalTimeMinutesContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'totalTimeMinutes',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Recipe, Recipe, QAfterFilterCondition> totalTimeMinutesMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'totalTimeMinutes',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Recipe, Recipe, QAfterFilterCondition>
+      totalTimeMinutesIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'totalTimeMinutes',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Recipe, Recipe, QAfterFilterCondition>
+      totalTimeMinutesIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'totalTimeMinutes',
+        value: '',
       ));
     });
   }
@@ -2527,9 +2613,11 @@ extension RecipeQueryWhereDistinct on QueryBuilder<Recipe, Recipe, QDistinct> {
     });
   }
 
-  QueryBuilder<Recipe, Recipe, QDistinct> distinctByTotalTimeMinutes() {
+  QueryBuilder<Recipe, Recipe, QDistinct> distinctByTotalTimeMinutes(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'totalTimeMinutes');
+      return query.addDistinctBy(r'totalTimeMinutes',
+          caseSensitive: caseSensitive);
     });
   }
 }
@@ -2619,7 +2707,7 @@ extension RecipeQueryProperty on QueryBuilder<Recipe, Recipe, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Recipe, int?, QQueryOperations> totalTimeMinutesProperty() {
+  QueryBuilder<Recipe, String?, QQueryOperations> totalTimeMinutesProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'totalTimeMinutes');
     });

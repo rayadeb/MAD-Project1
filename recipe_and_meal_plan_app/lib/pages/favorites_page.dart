@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
+import 'package:provider/provider.dart';
+import 'package:recipe_and_meal_plan_app/database_helper.dart';
 import 'package:recipe_and_meal_plan_app/pages/recipe_detail_page.dart';
 import 'package:recipe_and_meal_plan_app/recipe.dart';
 
@@ -12,37 +14,13 @@ class FavoritePage extends StatefulWidget {
 }
 
 class _FavoritePageState extends State<FavoritePage> {
+  late DatabaseHelper databaseHelper;
   String _searchQuery = "";
-
-  Future<List<Recipe>> getRecipes(String query) async {
-    // await Future.delayed(const Duration(seconds: 1));
-    // final queryBuilder = widget.isar.recipes.filter().titleContains(query.toLowerCase());
-
-    if (query.isNotEmpty) {
-      return await widget.isar.recipes
-        .where()
-        .filter()
-        .titleContains(query, caseSensitive: false)
-        .favoritedEqualTo(true)
-        .findAll();
-    } else {
-      return await widget.isar.recipes
-        .where()
-        .filter()
-        .favoritedEqualTo(true)
-        .findAll();
-    }
-  }
-
-  Future<void> addToFavorites(Recipe recipe) async {
-
-    await widget.isar.writeTxn(() async {
-      recipe.favorited = !recipe.favorited;
-      await widget.isar.recipes.put(recipe);
-      setState(() {
-        
-      });
-    });
+  
+  @override
+  void initState() {
+    super.initState();
+    databaseHelper = Provider.of<DatabaseHelper>(context, listen: false);
   }
   
   @override
@@ -76,7 +54,7 @@ class _FavoritePageState extends State<FavoritePage> {
           ),
           Expanded(
             child: FutureBuilder<List<Recipe>>(
-              future: getRecipes(_searchQuery),
+              future: databaseHelper.getFavoriteRecipes(_searchQuery),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return const Center(child: Text("Error loading data"));
@@ -157,7 +135,12 @@ class _FavoritePageState extends State<FavoritePage> {
               top: 10.0,
               right: 10.0,
               child: GestureDetector(
-                onTap: () => addToFavorites(recipe),
+                onTap: () async {
+                  databaseHelper.addToFavorites(recipe);
+                  setState(() {
+                    
+                  });
+                },
                 child: recipe.favorited ?
                   Icon(Icons.bookmark, color: Colors.yellow[600], size: 36.0) :
                   Icon(Icons.bookmark_border_rounded, color: Colors.yellow[600], size: 36.0,),

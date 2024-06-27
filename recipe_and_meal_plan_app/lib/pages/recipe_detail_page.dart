@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
-import 'package:recipe_and_meal_plan_app/grocery_item.dart';
+import 'package:provider/provider.dart';
+import 'package:recipe_and_meal_plan_app/database_helper.dart';
 import 'package:recipe_and_meal_plan_app/recipe.dart';
 
 class RecipeDetail extends StatefulWidget {
@@ -14,11 +15,13 @@ class RecipeDetail extends StatefulWidget {
 }
 
 class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderStateMixin {
+  late DatabaseHelper databaseHelper;
   late final TabController _controller;
 
   @override
   void initState() {
     super.initState();
+    databaseHelper = Provider.of<DatabaseHelper>(context, listen: false);
     _controller = TabController(length: 3, vsync: this);
   }
 
@@ -275,7 +278,9 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
                 backgroundColor: const Color.fromARGB(255, 239, 244, 250),
               ),
               onPressed: () {
-                _addAll(widget.recipe.ingredients!);
+                databaseHelper.addAllItems(widget.recipe.ingredients!);
+                Navigator.pop(context);
+                // _addAll(widget.recipe.ingredients!);
               },
               child: FittedBox(
                 child: Row(
@@ -320,7 +325,8 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
             child: GestureDetector(
               onTap: () {
                 final String ingredientName = colData;
-                _addItem(ingredientName);
+                databaseHelper.addItem(ingredientName);
+                // _addItem(ingredientName);
               },
               child: Image.asset(
                 "icons/add_shopping.png",
@@ -341,36 +347,6 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
         ),
       ),
     );
-  }
-
-  void _addItem(String itemName) async {
-    if (itemName.isNotEmpty) {
-
-      final newGrocery = GroceryItem(item: itemName);
-      await widget.isar.writeTxn(() async {
-        await widget.isar.groceryItems.put(newGrocery);
-      });
-
-      // Update UI after successful write
-      setState(() {
-        
-      });
-    }
-  }
-
-  void _addAll(List<String> itemNames) async {
-    if (itemNames.isNotEmpty) {
-      await widget.isar.writeTxn(() async {
-        for (final itemName in itemNames) {
-          final newGrocery = GroceryItem(item: itemName);
-          await widget.isar.groceryItems.put(newGrocery);
-        }
-      });
-
-      setState(() {
-        
-      });
-    }
   }
 
   Widget buildDirectionTab() {

@@ -1,12 +1,11 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
-import 'package:recipe_and_meal_plan_app/meal_plan.dart';
+import 'package:provider/provider.dart';
+import 'package:recipe_and_meal_plan_app/database_helper.dart';
 import 'package:recipe_and_meal_plan_app/pages/recipe_detail_page.dart';
 import 'package:recipe_and_meal_plan_app/recipe.dart';
 
-const String RECIPE_DATA = 'assets/formatted_recipe_data.json';
+// const String RECIPE_DATA = 'assets/formatted_recipe_data.json';
 
 class RecipePage extends StatefulWidget {
   final Isar isar;
@@ -20,12 +19,19 @@ class RecipePage extends StatefulWidget {
 }
 
 class _RecipePageState extends State<RecipePage> {
+  late DatabaseHelper databaseHelper;
   bool _didChangeMealPlan = false;
   String _searchQuery = "";
 
   // Future<void> addRecipesFromJson(Isar isar) async {
+  //   // Check if the recipes collection is already populated
+  //   final existingRecipes = await widget.isar.recipes.count();
+  //   if (existingRecipes > 0) {
+  //     return;
+  //   }
   //   // Parse
-  //   String data = await DefaultAssetBundle.of(context).loadString(RECIPE_DATA);
+  //   String data = await rootBundle.loadString(RECIPE_DATA);
+  //   // String data = await DefaultAssetBundle.of(context).loadString(RECIPE_DATA);
   //   final List<dynamic> jsonData = jsonDecode(data);
 
   //   // Convert JSON data to Recipe objects
@@ -41,20 +47,20 @@ class _RecipePageState extends State<RecipePage> {
   //   return await widget.isar.recipes.where().findAll();
   // }
 
-  Future<List<Recipe>> getRecipes(String query) async {
-    // await Future.delayed(const Duration(seconds: 1));
-    // final queryBuilder = widget.isar.recipes.filter().titleContains(query.toLowerCase());
+  // Future<List<Recipe>> getRecipes(String query) async {
+  //   // await Future.delayed(const Duration(seconds: 1));
+  //   // final queryBuilder = widget.isar.recipes.filter().titleContains(query.toLowerCase());
 
-    if (query.isNotEmpty) {
-      return await widget.isar.recipes
-        .where()
-        .filter()
-        .titleContains(query, caseSensitive: false)
-        .findAll();
-    } else {
-      return await widget.isar.recipes.where().findAll();
-    }
-  }
+  //   if (query.isNotEmpty) {
+  //     return await widget.isar.recipes
+  //       .where()
+  //       .filter()
+  //       .titleContains(query, caseSensitive: false)
+  //       .findAll();
+  //   } else {
+  //     return await widget.isar.recipes.where().findAll();
+  //   }
+  // }
 
   // Future<List<Recipe>> getRecipes() async {
   //   String data = await DefaultAssetBundle.of(context).loadString(RECIPE_DATA);
@@ -69,6 +75,7 @@ class _RecipePageState extends State<RecipePage> {
   @override
   void initState() {
     super.initState();
+    databaseHelper = Provider.of<DatabaseHelper>(context, listen: false);
     // Uncomment to init the database for the first time
     // addRecipesFromJson(widget.isar);
   }
@@ -104,7 +111,7 @@ class _RecipePageState extends State<RecipePage> {
           ),
           Expanded(
             child: FutureBuilder<List<Recipe>>(
-              future: getRecipes(_searchQuery),
+              future: databaseHelper.getRecipes(_searchQuery),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return const Center(child: Text("Error loading data"));
@@ -134,7 +141,11 @@ class _RecipePageState extends State<RecipePage> {
     return GestureDetector(
       onTap: () {
         if (widget.fromMealPlanPage) {
-          addToMealPlan(recipe);
+          databaseHelper.addToMealPlan(recipe, widget.selectedDate!, widget.value!);
+          setState(() {
+            _didChangeMealPlan = true;
+          });
+          // addToMealPlan(recipe);
           Future.delayed(const Duration(milliseconds: 100), () {
             Navigator.pop(context, _didChangeMealPlan);
           });
@@ -192,7 +203,12 @@ class _RecipePageState extends State<RecipePage> {
               top: 10.0,
               right: 10.0,
               child: GestureDetector(
-                onTap: () => addToFavorites(recipe),
+                onTap: () async {
+                  await databaseHelper.addToFavorites(recipe);
+                  setState(() {
+                    
+                  });
+                },
                 child: recipe.favorited ?
                   Icon(Icons.bookmark, color: Colors.yellow[600], size: 36.0) :
                   Icon(Icons.bookmark_border_rounded, color: Colors.yellow[600], size: 36.0,),
@@ -205,63 +221,63 @@ class _RecipePageState extends State<RecipePage> {
     );
   }
 
-  Future<void> addToFavorites(Recipe recipe) async {
+  // Future<void> addToFavorites(Recipe recipe) async {
 
-    await widget.isar.writeTxn(() async {
-      recipe.favorited = !recipe.favorited;
-      await widget.isar.recipes.put(recipe);
-      setState(() {
+  //   await widget.isar.writeTxn(() async {
+  //     recipe.favorited = !recipe.favorited;
+  //     await widget.isar.recipes.put(recipe);
+  //     setState(() {
         
-      });
-    });
-  }
+  //     });
+  //   });
+  // }
 
-  Future<void> addToMealPlan(Recipe recipe) async {
-    // final dir = await getApplicationCacheDirectory();
-    // final isar = await Isar.open([MealPlanSchema], directory: dir.path);
+  // Future<void> addToMealPlan(Recipe recipe) async {
+  //   // final dir = await getApplicationCacheDirectory();
+  //   // final isar = await Isar.open([MealPlanSchema], directory: dir.path);
 
-    await widget.isar.writeTxn(() async {
-      final DateTime selectedDateWithoutTime = DateTime(
-        widget.selectedDate!.year,
-        widget.selectedDate!.month,
-        widget.selectedDate!.day,
-      );
+  //   await widget.isar.writeTxn(() async {
+  //     final DateTime selectedDateWithoutTime = DateTime(
+  //       widget.selectedDate!.year,
+  //       widget.selectedDate!.month,
+  //       widget.selectedDate!.day,
+  //     );
 
-      final existingPlan = await widget.isar.mealPlans
-        .where()
-        .filter()
-        .dateEqualTo(selectedDateWithoutTime)
-        .findFirst();
+  //     final existingPlan = await widget.isar.mealPlans
+  //       .where()
+  //       .filter()
+  //       .dateEqualTo(selectedDateWithoutTime)
+  //       .findFirst();
 
-      if (existingPlan != null) {
-        switch (widget.value) {
-          case 1:
-            existingPlan.breakfastId = recipe.id;
-            break;
-          case 2:
-            existingPlan.lunchId = recipe.id;
-            break;
-          case 3:
-            existingPlan.dinnerId = recipe.id;
-            break;
-        }
-        await widget.isar.mealPlans.put(existingPlan);
-        print("Updated meal plan for $selectedDateWithoutTime");
-      } else {
-        await widget.isar.mealPlans.put(
-          MealPlan(
-            date: selectedDateWithoutTime,
-            breakfastId: widget.value == 1 ? recipe.id : null,
-            lunchId: widget.value == 2 ? recipe.id : null,
-            dinnerId: widget.value == 3 ? recipe.id : null
-          )
-        );
-        print("Added new meal plan for $selectedDateWithoutTime");
-      }
-      setState(() {
-        _didChangeMealPlan = true;
-        print("Setting _didChangeMealPlan to true");
-      });
-    });
-  }
+  //     if (existingPlan != null) {
+  //       switch (widget.value) {
+  //         case 1:
+  //           existingPlan.breakfastId = recipe.id;
+  //           break;
+  //         case 2:
+  //           existingPlan.lunchId = recipe.id;
+  //           break;
+  //         case 3:
+  //           existingPlan.dinnerId = recipe.id;
+  //           break;
+  //       }
+  //       await widget.isar.mealPlans.put(existingPlan);
+  //       print("Updated meal plan for $selectedDateWithoutTime");
+  //     } else {
+  //       await widget.isar.mealPlans.put(
+  //         MealPlan(
+  //           date: selectedDateWithoutTime,
+  //           breakfastId: widget.value == 1 ? recipe.id : null,
+  //           lunchId: widget.value == 2 ? recipe.id : null,
+  //           dinnerId: widget.value == 3 ? recipe.id : null
+  //         )
+  //       );
+  //       print("Added new meal plan for $selectedDateWithoutTime");
+  //     }
+  //     setState(() {
+  //       _didChangeMealPlan = true;
+  //       print("Setting _didChangeMealPlan to true");
+  //     });
+  //   });
+  // }
 }
