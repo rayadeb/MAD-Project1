@@ -5,6 +5,7 @@
 # then based on the conditions set, some entries are dropped, while others are written in
 # this is done via pandas, and then reformatted back to json
 import json
+import numpy as np
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
@@ -88,6 +89,7 @@ def get_nutrition_info(url):
 def main(row_amount, json_file):
 
     df = pd.read_json(json_file)
+    print(df.shape)
 
     # Check the shape of the DataFrame to understand its dimensions
     print("Original DataFrame shape:", df.shape)
@@ -95,7 +97,7 @@ def main(row_amount, json_file):
 
     # removing rows
 
-    df.drop(df.index[int(row_amount):], inplace=True)
+    df.drop(np.random.choice(df.index, size=row_amount, replace=False), inplace=True)
 
     # Check the shape of the DataFrame after removal
     print("DataFrame shape after removing rows:", df.shape)
@@ -141,7 +143,7 @@ def main(row_amount, json_file):
 
     if updated_recipes:
         # Write back updated recipes to the JSON file
-        with open(json_file, 'w') as f:
+        with open(formatted_json_file, 'w') as f:
             json.dump(updated_recipes, f, indent=4)
 
     print(f"** Attempted to process nutritional content for {attempted_count} recipes. **")
@@ -158,6 +160,9 @@ def main(row_amount, json_file):
     print('** Successfully dropped entries with no photo. **')
       
     # if these fields are not in data, add them as below  
+    # convert 'total_time_minutes' to str and replace '0' with '--'
+    df["total_time_minutes"] = df["total_time_minutes"].astype(str)
+    df.loc[df["total_time_minutes"] == '0', "total_time_minutes"] = '--'
     if 'calories' not in df.columns:
         df['calories'] = '--'
     if 'protein' not in df.columns:
@@ -178,4 +183,4 @@ def main(row_amount, json_file):
 
 
 if __name__ == "__main__":
-    main(row_amount= 20, json_file = 'C:/Users/Raya/MAD-Project1/data_cleaning/recipe_data.json')
+    main(row_amount= 225000, json_file = 'C:/Users/Raya/MAD-Project1/data_cleaning/recipe_data.json')
