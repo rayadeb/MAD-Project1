@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
+import 'package:recipe_and_meal_plan_app/grocery_item.dart';
 import 'package:recipe_and_meal_plan_app/recipe.dart';
 
 class RecipeDetail extends StatefulWidget {
-  final Recipe recipe ;
+  final Isar isar;
+  final Recipe recipe;
 
-  const RecipeDetail({super.key, required this.recipe});
+  const RecipeDetail({super.key, required this.isar, required this.recipe});
 
   @override
   State<RecipeDetail> createState() => _RecipeDetailState();
@@ -271,7 +274,9 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 239, 244, 250),
               ),
-              onPressed: () {},
+              onPressed: () {
+                _addAll(widget.recipe.ingredients!);
+              },
               child: FittedBox(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -313,7 +318,10 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
           leading: SizedBox(
             height: 30.0,
             child: GestureDetector(
-              onTap: () {print('TAPPED');},
+              onTap: () {
+                final String ingredientName = colData;
+                _addItem(ingredientName);
+              },
               child: Image.asset(
                 "icons/add_shopping.png",
                 color: const Color.fromARGB(255, 143, 199, 142),
@@ -333,6 +341,36 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
         ),
       ),
     );
+  }
+
+  void _addItem(String itemName) async {
+    if (itemName.isNotEmpty) {
+
+      final newGrocery = GroceryItem(item: itemName);
+      await widget.isar.writeTxn(() async {
+        await widget.isar.groceryItems.put(newGrocery);
+      });
+
+      // Update UI after successful write
+      setState(() {
+        
+      });
+    }
+  }
+
+  void _addAll(List<String> itemNames) async {
+    if (itemNames.isNotEmpty) {
+      await widget.isar.writeTxn(() async {
+        for (final itemName in itemNames) {
+          final newGrocery = GroceryItem(item: itemName);
+          await widget.isar.groceryItems.put(newGrocery);
+        }
+      });
+
+      setState(() {
+        
+      });
+    }
   }
 
   Widget buildDirectionTab() {

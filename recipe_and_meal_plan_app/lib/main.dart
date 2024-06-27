@@ -37,6 +37,10 @@ void main() async {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        routes: {
+          '/grocery_page': (context) => GroceryPage(isar: isar, ingredientName: ModalRoute.of(context)?.settings.arguments as String?,
+          ),
+        },
         theme: ThemeData(
           useMaterial3: true
         ),

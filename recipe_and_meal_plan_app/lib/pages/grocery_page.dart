@@ -5,7 +5,8 @@ import 'package:recipe_and_meal_plan_app/grocery_item.dart';
 
 class GroceryPage extends StatefulWidget {
   final Isar isar;
-  const GroceryPage({super.key, required this.isar});
+  final String? ingredientName;
+  const GroceryPage({super.key, required this.isar, this.ingredientName});
 
   @override
   State<GroceryPage> createState() => _GroceryPageState();
@@ -37,6 +38,7 @@ class _GroceryPageState extends State<GroceryPage> {
 
   void _addItem(String itemName) async {
     if (itemName.isNotEmpty) {
+
       final newGrocery = GroceryItem(item: itemName);
       await widget.isar.writeTxn(() async {
         await widget.isar.groceryItems.put(newGrocery);
@@ -128,6 +130,10 @@ class _GroceryPageState extends State<GroceryPage> {
 
   @override
   Widget build(BuildContext context) {
+    // final String? ingredientName = ModalRoute.of(context)?.settings.arguments as String?;
+    // if (ingredientName != null && ingredientName.isNotEmpty) {
+    //   _addItem(ingredientName);
+    // }
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

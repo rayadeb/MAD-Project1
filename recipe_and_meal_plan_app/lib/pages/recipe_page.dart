@@ -140,7 +140,7 @@ class _RecipePageState extends State<RecipePage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => RecipeDetail(recipe: recipe)
+              builder: (context) => RecipeDetail(isar: widget.isar, recipe: recipe)
             )
           );
         }
