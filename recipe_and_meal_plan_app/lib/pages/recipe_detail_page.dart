@@ -312,10 +312,13 @@ class _RecipeDetailState extends State<RecipeDetail> with SingleTickerProviderSt
         child: ListTile(
           leading: SizedBox(
             height: 30.0,
-            child: Image.asset(
-              "icons/add_shopping.png",
-              color: const Color.fromARGB(255, 143, 199, 142),
-              colorBlendMode: BlendMode.srcIn,
+            child: GestureDetector(
+              onTap: () {print('TAPPED');},
+              child: Image.asset(
+                "icons/add_shopping.png",
+                color: const Color.fromARGB(255, 143, 199, 142),
+                colorBlendMode: BlendMode.srcIn,
+              ),
             ),
           ),
           title: Text(
