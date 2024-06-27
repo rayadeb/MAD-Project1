@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:isar/isar.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +18,6 @@ class MealPlanPage extends StatefulWidget {
 }
 
 class _MealPlanPageState extends State<MealPlanPage> {
-  // final DatesProvider _datesProvider = DatesProvider();
   final ScrollController _scrollController = ScrollController();
   DateTime? _selectedDate;
   MealPlan? mealPlan;
@@ -24,17 +25,12 @@ class _MealPlanPageState extends State<MealPlanPage> {
   Recipe? lunch;
   Recipe? dinner;
 
-  // Future<Recipe?> getRecipeById(int id) async {
-  //   final recipe = await widget.isar.recipes.where().idEqualTo(id).findFirst();
-  //   return recipe;
-  // }
-
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
     _selectedDate = DateTime.now();
-    fetchData();
+    // fetchData();
   }
 
   @override
@@ -92,6 +88,52 @@ class _MealPlanPageState extends State<MealPlanPage> {
         child: const Icon(Icons.add),
       ),
     );
+    // return Scaffold(
+    //   appBar: AppBar(
+    //     centerTitle: true,
+    //     title: const Text("Meal Plan", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0, color: Color(0xFF4D4D4D))),
+    //     backgroundColor: const Color(0xFFDDEFDD),
+    //     elevation: 5,
+    //     shadowColor: Colors.grey.withOpacity(0.5),
+    //   ),
+    //   body: Column(
+    //     children: [
+    //       buildWeekView(),
+    //       buildTiles(),
+    //     ],
+    //   ),
+    //   floatingActionButton: FloatingActionButton(
+    //     onPressed: () {
+    //       showMenu<int>(
+    //         context: context,
+    //         position: const RelativeRect.fromLTRB(110, 570, 110, 100),
+    //         items: [
+    //           const PopupMenuItem(
+    //             value: 1,
+    //             child: Text("Add to breakfast"),
+    //           ),
+    //           const PopupMenuItem(
+    //             value: 2,
+    //             child: Text("Add to lunch"),
+    //           ),
+    //           const PopupMenuItem(
+    //             value: 3,
+    //             child: Text("Add to dinner"),
+    //           ),
+    //         ],
+    //         elevation: 20.0,
+    //         color: const Color.fromARGB(255, 239, 244, 250),
+    //       ).then((value) {
+    //         if (value != null) {
+    //           onFabMenuItemSelected(value);
+    //         }
+    //       });
+    //     },
+    //     backgroundColor: const Color.fromARGB(255, 188, 227, 187),
+    //     foregroundColor: const Color(0xFF4D4D4D),
+    //     child: const Icon(Icons.add),
+    //   ),
+    // );
   }
 
   void onFabMenuItemSelected(item) async {
@@ -111,8 +153,6 @@ class _MealPlanPageState extends State<MealPlanPage> {
   Widget buildCapsuleView(DateTime date) {
     final day = DateFormat("ccccc").format(date);
     final formattedDate = DateFormat("d").format(date);
-    // final today = DateTime.now();
-    // final isToday = date.year == today.year && date.month == today.month && date.day == today.day;
     final isSelected = _selectedDate != null && date.year == _selectedDate!.year && date.month == _selectedDate!.month && date.day == _selectedDate!.day;
 
     final double availableWidth = MediaQuery.of(context).size.width - 32.0;
@@ -174,25 +214,26 @@ class _MealPlanPageState extends State<MealPlanPage> {
   }
 
   Widget buildWeekView() {
+    final double availableWidth = MediaQuery.of(context).size.width;
+
     return Consumer<DatesProvider>(
       builder: (context, datesProvider, child) {
         final dates = datesProvider.dates;
 
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: SizedBox(
-            height: 100.0,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: dates.length,
-              itemBuilder: (context, index) {
-                final date = dates[index];
-                return buildCapsuleView(date);
-              },
-              physics: const AlwaysScrollableScrollPhysics(),
-              controller: _scrollController,
-            ),
-          ),
+        return SizedBox(
+          height: 160.0,
+          width: availableWidth,
+          child: ListView.builder(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+            scrollDirection: Axis.horizontal,
+            itemCount: dates.length,
+            itemBuilder: (context, index) {
+              final date = dates[index];
+              return buildCapsuleView(date);
+            },
+            physics: const AlwaysScrollableScrollPhysics(),
+            controller: _scrollController,
+          )
         );
       }
     );

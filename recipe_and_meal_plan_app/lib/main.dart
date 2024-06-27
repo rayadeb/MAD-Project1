@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_and_meal_plan_app/grocery_item.dart';
@@ -17,7 +19,8 @@ class DatesProvider extends ChangeNotifier {
 
   void loadMoreDates(int count) {
     final lastDate = _dates.last;
-    List<DateTime> newDates = List<DateTime>.generate(count, (index) => lastDate.add(Duration(days: index + 1)));
+    final offset = _dates.length;
+    List<DateTime> newDates = List<DateTime>.generate(count, (index) => lastDate.add(Duration(days: index + offset)));
     _dates.addAll(newDates);
     notifyListeners();
   }
@@ -37,17 +40,28 @@ void main() async {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        routes: {
-          '/grocery_page': (context) => GroceryPage(isar: isar, ingredientName: ModalRoute.of(context)?.settings.arguments as String?,
-          ),
-        },
         theme: ThemeData(
           useMaterial3: true
         ),
+        builder: (context, child) {
+          return ScrollConfiguration(
+            behavior: MyCustomScrollBehavior(),
+            child: child!,
+          );
+        },
         home: Dashboard(isar: isar),
       ),
     )
   );
+}
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse,
+  };
 }
 
 class Dashboard extends StatefulWidget {

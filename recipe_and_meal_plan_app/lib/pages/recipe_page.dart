@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:recipe_and_meal_plan_app/meal_plan.dart';
