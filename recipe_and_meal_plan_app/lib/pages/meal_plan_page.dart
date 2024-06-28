@@ -6,6 +6,7 @@ import 'package:recipe_and_meal_plan_app/database_helper.dart';
 import 'package:recipe_and_meal_plan_app/main.dart';
 import 'package:recipe_and_meal_plan_app/meal_plan.dart';
 import 'package:recipe_and_meal_plan_app/meal_plan_data.dart';
+import 'package:recipe_and_meal_plan_app/pages/recipe_detail_page.dart';
 import 'package:recipe_and_meal_plan_app/pages/recipe_page.dart';
 import 'package:recipe_and_meal_plan_app/recipe.dart';
 
@@ -216,89 +217,125 @@ class _MealPlanPageState extends State<MealPlanPage> {
       padding: const EdgeInsets.all(10.0),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 30.0),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.0),
-                color: const Color.fromARGB(255, 239, 244, 250),
-              ),
-              child: ListTile(
-                title: Text("BREAKFAST", style: TextStyle(color: Colors.grey[500], fontWeight: FontWeight.bold)),
-                subtitle: Text(
-                  breakfast?.title ?? "No meals planned yet",
-                  style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
-                trailing: Column(
-                  children: [
-                    SizedBox(
-                      width: 40.0,
-                      child: Image.asset(
-                        "icons/calories.png",
-                        color: const Color.fromARGB(255, 143, 199, 142),
-                        colorBlendMode: BlendMode.srcIn,
-                        ),
-                    ),
-                    Text(breakfast?.calories != null ? "${breakfast?.calories} cal" : "No calories"),
-                    // Text(breakfast?.calories?.toString() ?? "No Calories")
-                  ],
+          GestureDetector(
+            onTap: () {
+              if (breakfast != null) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RecipeDetail(isar: databaseHelper.isar, recipe: breakfast!)
+                  )
+                );
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(top: 30.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  color: const Color.fromARGB(255, 239, 244, 250),
+                ),
+                child: ListTile(
+                  title: Text("BREAKFAST", style: TextStyle(color: Colors.grey[500], fontWeight: FontWeight.bold)),
+                  subtitle: Text(
+                    breakfast?.title ?? "No meals planned yet",
+                    style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
+                  trailing: Column(
+                    children: [
+                      SizedBox(
+                        width: 40.0,
+                        child: Image.asset(
+                          "icons/calories.png",
+                          color: const Color.fromARGB(255, 143, 199, 142),
+                          colorBlendMode: BlendMode.srcIn,
+                          ),
+                      ),
+                      Text(breakfast?.calories != null ? "${breakfast?.calories} cal" : "No calories"),
+                      // Text(breakfast?.calories?.toString() ?? "No Calories")
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 30.0),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.0),
-                color: const Color.fromARGB(255, 239, 244, 250),
-              ),
-              child: ListTile(
-                title: Text("LUNCH", style: TextStyle(color: Colors.grey[500], fontWeight: FontWeight.bold)),
-                subtitle: Text(
-                  lunch?.title ?? "No meals planned yet",
-                  style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
-                trailing: Column(
-                  children: [
-                    SizedBox(
-                      width: 40.0,
-                      child: Image.asset(
-                        "icons/calories.png",
-                        color: const Color.fromARGB(255, 143, 199, 142),
-                        colorBlendMode: BlendMode.srcIn,
-                        ),
-                    ),
-                    Text(lunch?.calories != null ? "${lunch?.calories} cal" : "No calories"),
-                    // Text(lunch?.calories?.toString() ?? "No Calories")
-                  ],
+          GestureDetector(
+            onTap: () {
+              if (lunch != null) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RecipeDetail(isar: databaseHelper.isar, recipe: lunch!)
+                  )
+                );
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(top: 30.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  color: const Color.fromARGB(255, 239, 244, 250),
+                ),
+                child: ListTile(
+                  title: Text("LUNCH", style: TextStyle(color: Colors.grey[500], fontWeight: FontWeight.bold)),
+                  subtitle: Text(
+                    lunch?.title ?? "No meals planned yet",
+                    style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
+                  trailing: Column(
+                    children: [
+                      SizedBox(
+                        width: 40.0,
+                        child: Image.asset(
+                          "icons/calories.png",
+                          color: const Color.fromARGB(255, 143, 199, 142),
+                          colorBlendMode: BlendMode.srcIn,
+                          ),
+                      ),
+                      Text(lunch?.calories != null ? "${lunch?.calories} cal" : "No calories"),
+                      // Text(lunch?.calories?.toString() ?? "No Calories")
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 30.0),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.0),
-                color: const Color.fromARGB(255, 239, 244, 250),
-              ),
-              child: ListTile(
-                title: Text("DINNER", style: TextStyle(color: Colors.grey[500], fontWeight: FontWeight.bold)),
-                subtitle: Text(
-                  dinner?.title ?? "No meals planned yet",
-                  style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
-                trailing: Column(
-                  children: [
-                    SizedBox(
-                      width: 40.0,
-                      child: Image.asset(
-                        "icons/calories.png",
-                        color: const Color.fromARGB(255, 143, 199, 142),
-                        colorBlendMode: BlendMode.srcIn,
-                        ),
-                    ),
-                    Text(dinner?.calories != null ? "${dinner?.calories} cal" : "No calories"),
-                    // Text(dinner?.calories?.toString() ?? "No Calories")
-                  ],
+          GestureDetector(
+            onTap: () {
+              if (dinner != null) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RecipeDetail(isar: databaseHelper.isar, recipe: dinner!)
+                  )
+                );
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(top: 30.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  color: const Color.fromARGB(255, 239, 244, 250),
+                ),
+                child: ListTile(
+                  title: Text("DINNER", style: TextStyle(color: Colors.grey[500], fontWeight: FontWeight.bold)),
+                  subtitle: Text(
+                    dinner?.title ?? "No meals planned yet",
+                    style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
+                  trailing: Column(
+                    children: [
+                      SizedBox(
+                        width: 40.0,
+                        child: Image.asset(
+                          "icons/calories.png",
+                          color: const Color.fromARGB(255, 143, 199, 142),
+                          colorBlendMode: BlendMode.srcIn,
+                          ),
+                      ),
+                      Text(dinner?.calories != null ? "${dinner?.calories} cal" : "No calories"),
+                      // Text(dinner?.calories?.toString() ?? "No Calories")
+                    ],
+                  ),
                 ),
               ),
             ),

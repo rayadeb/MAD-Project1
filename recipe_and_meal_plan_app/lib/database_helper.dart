@@ -80,9 +80,9 @@ class DatabaseHelper{
 
     await isar.writeTxn(() async {
       final DateTime selectedDateWithoutTime = DateTime(
-        selectedDate!.year,
-        selectedDate!.month,
-        selectedDate!.day,
+        selectedDate.year,
+        selectedDate.month,
+        selectedDate.day,
       );
 
       final existingPlan = await isar.mealPlans

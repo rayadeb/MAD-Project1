@@ -23,61 +23,10 @@ class _RecipePageState extends State<RecipePage> {
   bool _didChangeMealPlan = false;
   String _searchQuery = "";
 
-  // Future<void> addRecipesFromJson(Isar isar) async {
-  //   // Check if the recipes collection is already populated
-  //   final existingRecipes = await widget.isar.recipes.count();
-  //   if (existingRecipes > 0) {
-  //     return;
-  //   }
-  //   // Parse
-  //   String data = await rootBundle.loadString(RECIPE_DATA);
-  //   // String data = await DefaultAssetBundle.of(context).loadString(RECIPE_DATA);
-  //   final List<dynamic> jsonData = jsonDecode(data);
-
-  //   // Convert JSON data to Recipe objects
-  //   final List<Recipe> recipes = jsonData.map((json) => Recipe.fromJson(json)).toList();
-
-  //   // Add recipes to Isar database
-  //   await isar.writeTxn(() async {
-  //     await isar.recipes.putAll(recipes);
-  //   });
-  // }
-
-  // Future<List<Recipe>> getAllRecipes() async {
-  //   return await widget.isar.recipes.where().findAll();
-  // }
-
-  // Future<List<Recipe>> getRecipes(String query) async {
-  //   // await Future.delayed(const Duration(seconds: 1));
-  //   // final queryBuilder = widget.isar.recipes.filter().titleContains(query.toLowerCase());
-
-  //   if (query.isNotEmpty) {
-  //     return await widget.isar.recipes
-  //       .where()
-  //       .filter()
-  //       .titleContains(query, caseSensitive: false)
-  //       .findAll();
-  //   } else {
-  //     return await widget.isar.recipes.where().findAll();
-  //   }
-  // }
-
-  // Future<List<Recipe>> getRecipes() async {
-  //   String data = await DefaultAssetBundle.of(context).loadString(RECIPE_DATA);
-  //   List<dynamic> mapData = jsonDecode(data);
-
-  //   // print(mapData);
-  //   List<Recipe> recipes = mapData.map((recipe) => Recipe.fromJson(recipe)).toList();
-
-  //   return recipes;
-  // }
-
   @override
   void initState() {
     super.initState();
     databaseHelper = Provider.of<DatabaseHelper>(context, listen: false);
-    // Uncomment to init the database for the first time
-    // addRecipesFromJson(widget.isar);
   }
 
   @override
@@ -220,64 +169,4 @@ class _RecipePageState extends State<RecipePage> {
       ),
     );
   }
-
-  // Future<void> addToFavorites(Recipe recipe) async {
-
-  //   await widget.isar.writeTxn(() async {
-  //     recipe.favorited = !recipe.favorited;
-  //     await widget.isar.recipes.put(recipe);
-  //     setState(() {
-        
-  //     });
-  //   });
-  // }
-
-  // Future<void> addToMealPlan(Recipe recipe) async {
-  //   // final dir = await getApplicationCacheDirectory();
-  //   // final isar = await Isar.open([MealPlanSchema], directory: dir.path);
-
-  //   await widget.isar.writeTxn(() async {
-  //     final DateTime selectedDateWithoutTime = DateTime(
-  //       widget.selectedDate!.year,
-  //       widget.selectedDate!.month,
-  //       widget.selectedDate!.day,
-  //     );
-
-  //     final existingPlan = await widget.isar.mealPlans
-  //       .where()
-  //       .filter()
-  //       .dateEqualTo(selectedDateWithoutTime)
-  //       .findFirst();
-
-  //     if (existingPlan != null) {
-  //       switch (widget.value) {
-  //         case 1:
-  //           existingPlan.breakfastId = recipe.id;
-  //           break;
-  //         case 2:
-  //           existingPlan.lunchId = recipe.id;
-  //           break;
-  //         case 3:
-  //           existingPlan.dinnerId = recipe.id;
-  //           break;
-  //       }
-  //       await widget.isar.mealPlans.put(existingPlan);
-  //       print("Updated meal plan for $selectedDateWithoutTime");
-  //     } else {
-  //       await widget.isar.mealPlans.put(
-  //         MealPlan(
-  //           date: selectedDateWithoutTime,
-  //           breakfastId: widget.value == 1 ? recipe.id : null,
-  //           lunchId: widget.value == 2 ? recipe.id : null,
-  //           dinnerId: widget.value == 3 ? recipe.id : null
-  //         )
-  //       );
-  //       print("Added new meal plan for $selectedDateWithoutTime");
-  //     }
-  //     setState(() {
-  //       _didChangeMealPlan = true;
-  //       print("Setting _didChangeMealPlan to true");
-  //     });
-  //   });
-  // }
 }
